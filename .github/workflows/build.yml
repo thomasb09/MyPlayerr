@@ -8,14 +8,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: '21'
       - name: Build with Maven
         run: mvn clean install
@@ -23,8 +23,12 @@ jobs:
         run: mvn test
       - name: Package JAR
         run: mvn package
-      - name: Upload Artifact
+      - name: Create runtime image with jlink
+        run: jlink --module-path "%JAVA_HOME%\\jmods;target\\classes" --add-modules javafx.controls,javafx.fxml --output target\\jre
+      - name: Create installer with jpackage
+        run: jpackage --input target --name MyPlayerr --main-jar MyPlayerr-1.0-SNAPSHOT.jar --icon src\\main\\resources\\icons\\app.ico --type exe --app-version 1.0.0 --vendor "Votre Société" --win-shortcut --win-menu --win-menu-group "MyPlayerr"
+      - name: Upload Installer
         uses: actions/upload-artifact@v3
         with:
-          name: myplayerr-jar
-          path: target/*.jar
+          name: MyPlayerr-Installer
+          path: MyPlayerr.exe
