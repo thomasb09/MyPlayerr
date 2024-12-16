@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.myplayerr.controller.MainController"
-            stylesheets="@css/styles.css">
+            fx:controller="com.myplayerr.controller.MainController">
+
+    <!-- Menu horizontal en haut -->
+    <top>
+        <MenuBar>
+            <Menu text="Preferences">
+                <MenuItem text="Preferences" onAction="#showSettings" />
+                <MenuItem text="Chang path music" onAction="#changePathMusic" />
+            </Menu>
+            <Menu text="Help">
+                <MenuItem text="About" onAction="#showAbout" />
+            </Menu>
+        </MenuBar>
+    </top>
+
+    <!-- Menu vertical à gauche -->
     <left>
-        <ToolBar orientation="VERTICAL">
-            <Button text="Playlist" onAction="#showPlaylist" />
-            <Button text="Album" onAction="#showAlbum" />
-            <Button text="Chanson" onAction="#showChanson" />
-            <Button text="Artiste" onAction="#showArtiste" />
-        </ToolBar>
+        <VBox spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+            <Button text="Playlists" minWidth="100" onAction="#showPlaylist" style="-fx-font-size: 14;" />
+            <Button text="Albums" minWidth="100" onAction="#showAlbum" style="-fx-font-size: 14;" />
+            <Button text="Chansons" minWidth="100" onAction="#showChanson" style="-fx-font-size: 14;" />
+            <Button text="Artistes" minWidth="100" onAction="#showArtiste" style="-fx-font-size: 14;" />
+        </VBox>
     </left>
+
+    <!-- Zone centrale pour afficher le contenu -->
     <center>
         <BorderPane fx:id="mainPane" />
     </center>
