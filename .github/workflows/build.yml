@@ -15,7 +15,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: 'liberica'
           java-version: '21'
       - name: Build with Maven
         run: mvn clean install
