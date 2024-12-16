@@ -28,9 +28,9 @@
     <left>
         <VBox spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
             <Button text="Playlists" minWidth="100" onAction="#showPlaylist" style="-fx-font-size: 14;" />
-            <Button text="Albums" minWidth="100" onAction="#showAlbum" style="-fx-font-size: 14;" />
-            <Button text="Chansons" minWidth="100" onAction="#showChanson" style="-fx-font-size: 14;" />
-            <Button text="Artistes" minWidth="100" onAction="#showArtiste" style="-fx-font-size: 14;" />
+            <Button text="Albums" minWidth="100" onAction="#showAlbums" style="-fx-font-size: 14;" />
+            <Button text="Chansons" minWidth="100" onAction="#showChansons" style="-fx-font-size: 14;" />
+            <Button text="Artistes" minWidth="100" onAction="#showArtistes" style="-fx-font-size: 14;" />
         </VBox>
     </left>
 

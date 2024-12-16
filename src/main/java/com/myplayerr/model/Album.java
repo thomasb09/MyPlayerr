@@ -1,14 +1,19 @@
 package com.myplayerr.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Album {
     private int id;
-    private String titre;
-    private int artisteId;
+    private String nom;
+    private Artiste artiste;
+    private List<Chanson> chansons;
 
-    public Album(int id, String titre, int artisteId) {
+    public Album(int id, String nom, Artiste artiste) {
         this.id = id;
-        this.titre = titre;
-        this.artisteId = artisteId;
+        this.nom = nom;
+        this.artiste = artiste;
+        this.chansons = new ArrayList<>();
     }
 
     public int getId() {
@@ -19,19 +24,27 @@ public class Album {
         this.id = id;
     }
 
-    public String getTitre() {
-        return titre;
+    public String getNom() {
+        return nom;
     }
 
-    public void setTitre(String titre) {
-        this.titre = titre;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
-    public int getArtisteId() {
-        return artisteId;
+    public Artiste getArtiste() {
+        return artiste;
     }
 
-    public void setArtisteId(int artisteId) {
-        this.artisteId = artisteId;
+    public void setArtiste(Artiste artiste) {
+        this.artiste = artiste;
+    }
+
+    public List<Chanson> getChansons() {
+        return chansons;
+    }
+
+    public void addChanson(Chanson chanson) {
+        chansons.add(chanson);
     }
 }

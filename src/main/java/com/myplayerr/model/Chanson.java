@@ -1,17 +1,18 @@
 package com.myplayerr.model;
 
-public class
-Chanson {
+public class Chanson {
     private int id;
     private String titre;
-    private int albumId;
+    private Album album;
+    private Artiste artiste;
     private String duree;
     private String cheminFichier;
 
-    public Chanson(int id, String titre, int albumId, String duree, String cheminFichier) {
+    public Chanson(int id, String titre, Album album, Artiste artiste, String duree, String cheminFichier) {
         this.id = id;
         this.titre = titre;
-        this.albumId = albumId;
+        this.album = album;
+        this.artiste = artiste;
         this.duree = duree;
         this.cheminFichier = cheminFichier;
     }
@@ -32,12 +33,20 @@ Chanson {
         this.titre = titre;
     }
 
-    public int getAlbumId() {
-        return albumId;
+    public Album getAlbum() {
+        return album;
     }
 
-    public void setAlbumId(int albumId) {
-        this.albumId = albumId;
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
+
+    public Artiste getArtiste() {
+        return artiste;
+    }
+
+    public void setArtiste(Artiste artiste) {
+        this.artiste = artiste;
     }
 
     public String getDuree() {
