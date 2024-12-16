@@ -17,10 +17,20 @@ jobs:
           java-version: '21'
       - name: Build with Maven
         run: mvn clean package
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: "release-${{ github.run_number }}"
+          release_name: "Release ${{ github.run_number }}"
+          body: "Automated release of the latest JAR file."
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Release JAR
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: target/MyPlayerr-1.0-SNAPSHOT.jar
           asset_name: MyPlayerr-1.0-SNAPSHOT.jar
           asset_content_type: application/java-archive
