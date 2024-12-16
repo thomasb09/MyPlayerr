@@ -1,0 +1,45 @@
+/* Global styles */
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #ffffff;
+}
+
+/* ToolBar styles */
+.tool-bar {
+    -fx-background-color: #252526;
+    -fx-spacing: 15;
+    -fx-padding: 15;
+}
+
+/* Button styles */
+.button {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-pref-width: 150px;
+    -fx-pref-height: 50px;
+    -fx-padding: 10;
+    -fx-background-radius: 10;
+}
+
+.button:hover {
+    -fx-background-color: #007acc;
+    -fx-text-fill: #ffffff;
+}
+
+.button:focused {
+    -fx-background-color: #005fa3;
+}
+
+/* Center pane styles */
+.border-pane {
+    -fx-background-color: #252526;
+    -fx-padding: 20;
+}
+
+.label {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}

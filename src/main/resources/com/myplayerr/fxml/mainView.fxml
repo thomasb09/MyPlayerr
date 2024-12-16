@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.myplayerr.controller.MainController"
+            stylesheets="@css/styles.css">
+    <left>
+        <ToolBar orientation="VERTICAL">
+            <Button text="Playlist" onAction="#showPlaylist" />
+            <Button text="Album" onAction="#showAlbum" />
+            <Button text="Chanson" onAction="#showChanson" />
+            <Button text="Artiste" onAction="#showArtiste" />
+        </ToolBar>
+    </left>
+    <center>
+        <BorderPane fx:id="mainPane" />
+    </center>
+</BorderPane>

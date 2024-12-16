@@ -1,29 +1,34 @@
 package com.myplayerr.controller;
 
+import com.myplayerr.view.AlbumView;
+import com.myplayerr.view.ArtisteView;
+import com.myplayerr.view.ChansonView;
+import com.myplayerr.view.PlaylistView;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
 
 public class MainController {
 
     @FXML
-    private ListView<String> songList;
+    private BorderPane mainPane;
 
     @FXML
-    private Button playButton;
-
-    @FXML
-    public void initialize() {
-        songList.getItems().addAll("Chanson 1", "Chanson 2", "Chanson 3");
+    private void showPlaylist() {
+        mainPane.setCenter(new PlaylistView().getView());
     }
 
     @FXML
-    public void handlePlay() {
-        String selectedSong = songList.getSelectionModel().getSelectedItem();
-        if (selectedSong != null) {
-            System.out.println("Lecture de : " + selectedSong);
-        } else {
-            System.out.println("Aucune chanson sélectionnée");
-        }
+    private void showAlbum() {
+        mainPane.setCenter(new AlbumView().getView());
+    }
+
+    @FXML
+    private void showChanson() {
+        mainPane.setCenter(new ChansonView().getView());
+    }
+
+    @FXML
+    private void showArtiste() {
+        mainPane.setCenter(new ArtisteView().getView());
     }
 }

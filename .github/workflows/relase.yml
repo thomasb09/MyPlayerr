@@ -1,0 +1,26 @@
+name: Release JAR
+
+on:
+  push:
+    branches: [ "release" ]
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'liberica'
+          java-version: '21'
+      - name: Build with Maven
+        run: mvn clean package
+      - name: Upload Release JAR
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: target/MyPlayerr-1.0-SNAPSHOT.jar
+          asset_name: MyPlayerr-1.0-SNAPSHOT.jar
+          asset_content_type: application/java-archive

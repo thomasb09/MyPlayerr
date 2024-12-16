@@ -21,10 +21,3 @@ jobs:
         run: mvn clean install
       - name: Run Tests
         run: mvn test
-      - name: Package JAR
-        run: mvn package
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: myplayerr-jar
-          path: target/*.jar
