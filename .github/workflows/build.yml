@@ -12,11 +12,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'liberica'
-          java-version: '21'
+      - name: Download Liberica Full JDK with FX
+        run: curl -Lo liberica-full.zip "https://download.bell-sw.com/java/21+37/bellsoft-jdk21+37-windows-amd64-full.zip"
+      - name: Unzip Liberica Full
+        run: powershell Expand-Archive liberica-full.zip -DestinationPath .\liberica-full-jdk
+      - name: Set JAVA_HOME
+        run: echo "JAVA_HOME=$(pwd)\\liberica-full-jdk" >> $GITHUB_ENV
       - name: Build with Maven
         run: mvn clean install
       - name: Run Tests
