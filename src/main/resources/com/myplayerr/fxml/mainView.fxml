@@ -9,7 +9,8 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.myplayerr.controller.MainController">
+            fx:controller="com.myplayerr.controller.MainController"
+            stylesheets="@css/styles.css">
 
     <!-- Menu horizontal en haut -->
     <top>
