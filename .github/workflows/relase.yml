@@ -21,10 +21,11 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: "release-${{ github.run_number }}"
-          release_name: "Release ${{ github.run_number }}"
+          tag_name: "release-${{ github.run_id }}"
+          release_name: "Release ${{ github.run_id }}"
           body: "Automated release of the latest JAR file."
           draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Release JAR
