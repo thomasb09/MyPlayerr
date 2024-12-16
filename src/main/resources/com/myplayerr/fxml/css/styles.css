@@ -1,45 +1,54 @@
-/* Global styles */
+/* Général */
 .root {
-    -fx-font-family: "Arial";
-    -fx-background-color: #1e1e1e;
-    -fx-text-fill: #ffffff;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #1e1e1e; /* Couleur de fond sombre */
+    -fx-text-fill: #dcdcdc; /* Texte clair */
 }
 
-/* ToolBar styles */
-.tool-bar {
-    -fx-background-color: #252526;
-    -fx-spacing: 15;
-    -fx-padding: 15;
+/* MenuBar */
+.menu-bar {
+    -fx-background-color: #2b2b2b; /* Fond sombre */
+    -fx-padding: 5;
 }
 
-/* Button styles */
-.button {
-    -fx-background-color: #3c3c3c;
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 16px;
-    -fx-pref-width: 150px;
-    -fx-pref-height: 50px;
+.menu {
+    -fx-text-fill: #dcdcdc; /* Texte des menus */
+}
+
+.menu-item {
+    -fx-text-fill: #dcdcdc;
+}
+
+.menu:hover {
+    -fx-background-color: #2c3e50; /* Fond légèrement différent au survol */
+}
+
+/* VBox (Menu vertical) */
+.vbox {
+    -fx-background-color: #2c3e50; /* Fond sombre légèrement différent */
     -fx-padding: 10;
-    -fx-background-radius: 10;
+    -fx-spacing: 10;
+}
+
+/* Boutons */
+.button {
+    -fx-background-color: #3c763d; /* Vert */
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10;
 }
 
 .button:hover {
-    -fx-background-color: #007acc;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #45a049; /* Vert clair au survol */
 }
 
-.button:focused {
-    -fx-background-color: #005fa3;
+.button:pressed {
+    -fx-background-color: #2e6232; /* Vert foncé lors du clic */
 }
 
-/* Center pane styles */
+/* MainPane (Zone centrale) */
 .border-pane {
-    -fx-background-color: #252526;
-    -fx-padding: 20;
-}
-
-.label {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
+    -fx-background-color: #1e1e1e; /* Fond sombre pour la zone centrale */
 }

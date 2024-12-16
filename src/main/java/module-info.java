@@ -1,6 +1,10 @@
 module com.myplayerr {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
+    requires mp3agic;
+    requires okhttp3;
+    requires org.json;
 
 
     opens com.myplayerr to javafx.fxml;

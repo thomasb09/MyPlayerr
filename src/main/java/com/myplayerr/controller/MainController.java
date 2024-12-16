@@ -1,10 +1,14 @@
 package com.myplayerr.controller;
 
+import com.myplayerr.database.SettingDAO;
+import com.myplayerr.service.ChansonService;
+import com.myplayerr.service.SettingService;
 import com.myplayerr.view.AlbumView;
 import com.myplayerr.view.ArtisteView;
 import com.myplayerr.view.ChansonView;
 import com.myplayerr.view.PlaylistView;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 
 public class MainController {
@@ -12,23 +16,60 @@ public class MainController {
     @FXML
     private BorderPane mainPane;
 
+    private final ChansonService chansonService = new ChansonService();
+    private final SettingService settingService = new SettingService();
+    private final SettingDAO settingDAO = new SettingDAO();
+
+    @FXML
+    public void initialize() {
+        String musicPath = settingDAO.getSetting("mp3Path");
+
+        if (musicPath != null) {
+            chansonService.scanAndImportMusic(musicPath);
+        }
+    }
+
     @FXML
     private void showPlaylist() {
         mainPane.setCenter(new PlaylistView().getView());
     }
 
     @FXML
-    private void showAlbum() {
+    private void showArtistes() {
+        mainPane.setCenter(new ArtisteView().getView());
+    }
+
+    @FXML
+    private void showAlbums() {
         mainPane.setCenter(new AlbumView().getView());
     }
 
     @FXML
-    private void showChanson() {
+    private void showChansons() {
         mainPane.setCenter(new ChansonView().getView());
     }
 
+
     @FXML
-    private void showArtiste() {
-        mainPane.setCenter(new ArtisteView().getView());
+    private void changePathMusic() {
+        settingService.setPathMusic();
+    }
+
+    @FXML
+    private void showSettings() {
+    }
+
+    @FXML
+    private void showAbout() {
+        Alert aboutAlert = new Alert(Alert.AlertType.INFORMATION);
+        aboutAlert.setTitle("About MyPlayerr");
+        aboutAlert.setHeaderText("MyPlayerr - Gestionnaire MP3");
+        aboutAlert.setContentText("Version 1.0.0\nDéveloppé par Thomas Bisson.");
+        aboutAlert.showAndWait();
+    }
+
+    @FXML
+    private void exitApp() {
+        System.exit(0);
     }
 }
