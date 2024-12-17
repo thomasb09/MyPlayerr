@@ -12,7 +12,7 @@ public class ChansonDAO {
 
     public static List<Chanson> getChansonByAlbum(int albumId) {
         List<Chanson> chansons = new ArrayList<>();
-        String sql = "SELECT chansons.id, chansons.title, chansons.duree, chansons.chemin_fichier, " +
+        String sql = "SELECT chansons.id, chansons.title, chansons.duree, chansons.path, " +
                 "albums.id AS album_id, albums.nom AS album_nom, artistes.id AS artiste_id, artistes.nom AS artiste_nom " +
                 "FROM chansons " +
                 "JOIN albums ON chansons.album_id = albums.id " +
@@ -34,7 +34,7 @@ public class ChansonDAO {
                         album,
                         artiste,
                         rs.getString("duree"),
-                        rs.getString("chemin_fichier")
+                        rs.getString("path")
                 );
                 chansons.add(chanson);
             }
@@ -76,7 +76,7 @@ public class ChansonDAO {
 
     public List<Chanson> getAllChansons() {
         List<Chanson> chansons = new ArrayList<>();
-        String sql = "SELECT chansons.id, chansons.title, chansons.duree, chansons.chemin_fichier, " +
+        String sql = "SELECT chansons.id, chansons.title, chansons.duree, chansons.path, " +
                 "albums.id AS album_id, albums.nom AS album_nom, artistes.id AS artiste_id, artistes.nom AS artiste_nom " +
                 "FROM chansons " +
                 "JOIN albums ON chansons.album_id = albums.id " +
@@ -89,7 +89,7 @@ public class ChansonDAO {
             while (rs.next()) {
                 Artiste artiste = new Artiste(rs.getInt("artiste_id"), rs.getString("artiste_nom"));
                 Album album = new Album(rs.getInt("album_id"), rs.getString("album_nom"), artiste);
-                chansons.add(new Chanson(rs.getInt("id"), rs.getString("title"), album, artiste, rs.getString("duree"), rs.getString("chemin_fichier")));
+                chansons.add(new Chanson(rs.getInt("id"), rs.getString("title"), album, artiste, rs.getString("duree"), rs.getString("path")));
             }
         } catch (SQLException e) {
             e.printStackTrace();

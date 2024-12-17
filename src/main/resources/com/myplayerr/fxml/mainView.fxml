@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -37,4 +38,15 @@
     <center>
         <BorderPane fx:id="mainPane" />
     </center>
+
+    <!-- Lecteur Audio toujours présent en bas -->
+    <bottom>
+        <HBox fx:id="playerBox" spacing="20" alignment="CENTER" style="-fx-background-color: #2b2b2b; -fx-padding: 10;">
+            <Button onAction="#chansonPrecedente" text="◁" style="-fx-background-color: #f39c12; -fx-text-fill: white;" />
+            <Button onAction="#playPause" text="▶" style="-fx-background-color: #27ae60; -fx-text-fill: white;" />
+            <Button onAction="#chansonSuivante" text="▷" style="-fx-background-color: #f39c12; -fx-text-fill: white;" />
+            <Button onAction="#stopChanson" text="■" style="-fx-background-color: #c0392b; -fx-text-fill: white;" />
+            <Label fx:id="songLabel" text="Aucune chanson en cours" style="-fx-text-fill: white;" />
+        </HBox>
+    </bottom>
 </BorderPane>

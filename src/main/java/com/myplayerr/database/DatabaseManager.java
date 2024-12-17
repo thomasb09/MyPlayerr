@@ -39,7 +39,6 @@ public class DatabaseManager {
                     "artist_id INTEGER, " +
                     "album_id INTEGER, " +
                     "duree TEXT, " +
-                    "chemin_fichier TEXT, " +
                     "FOREIGN KEY(artist_id) REFERENCES artistes(id) ON DELETE SET NULL, " +
                     "FOREIGN KEY(album_id) REFERENCES albums(id) ON DELETE SET NULL" +
                     ");";
