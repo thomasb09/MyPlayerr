@@ -38,7 +38,7 @@ public class AlbumDAO {
         }
     }
 
-    public List<Album> getAllAlbums() {
+    public static List<Album> getAllAlbums() {
         List<Album> albums = new ArrayList<>();
         String sql = "SELECT albums.id, albums.nom, artistes.nom AS artiste_nom, albums.artiste_id AS artiste_id FROM albums " +
                 "JOIN artistes ON albums.artiste_id = artistes.id";
@@ -57,4 +57,47 @@ public class AlbumDAO {
         return albums;
     }
 
+    public static Album getAlbumById(int albumId) {
+        try (Connection conn = DatabaseManager.connect();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM albums WHERE id = ?")) {
+
+            stmt.setInt(1, albumId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Artiste artiste = ArtisteDAO.getArtisteById(rs.getInt("artiste_id"));
+
+                return new Album(
+                        rs.getInt("id"),
+                        rs.getString("titre"),
+                        artiste
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<Album> getAlbumsByArtiste(int artisteId) {
+        List<Album> albums = new ArrayList<>();
+        String sql = "SELECT * FROM albums WHERE artiste_id = ?";
+
+        try (Connection conn = DatabaseManager.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, artisteId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                albums.add(new Album(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        new Artiste(artisteId, "")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return albums;
+    }
 }

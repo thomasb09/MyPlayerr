@@ -36,7 +36,7 @@ public class ArtisteDAO {
         }
     }
 
-    public List<Artiste> getAllArtistes() {
+    public static List<Artiste> getAllArtistes() {
         List<Artiste> artistes = new ArrayList<>();
         String sql = "SELECT * FROM artistes";
 
@@ -51,6 +51,25 @@ public class ArtisteDAO {
             e.printStackTrace();
         }
         return artistes;
+    }
+
+    public static Artiste getArtisteById(int artisteId) {
+        try (Connection conn = DatabaseManager.connect();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM artistes WHERE id = ?")) {
+
+            stmt.setInt(1, artisteId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Artiste(
+                        rs.getInt("id"),
+                        rs.getString("nom")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

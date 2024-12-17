@@ -10,6 +10,40 @@ import java.util.List;
 
 public class ChansonDAO {
 
+    public static List<Chanson> getChansonByAlbum(int albumId) {
+        List<Chanson> chansons = new ArrayList<>();
+        String sql = "SELECT chansons.id, chansons.title, chansons.duree, chansons.chemin_fichier, " +
+                "albums.id AS album_id, albums.nom AS album_nom, artistes.id AS artiste_id, artistes.nom AS artiste_nom " +
+                "FROM chansons " +
+                "JOIN albums ON chansons.album_id = albums.id " +
+                "JOIN artistes ON chansons.artist_id = artistes.id " +
+                "WHERE albums.id = ?";
+
+        try (Connection conn = DatabaseManager.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, albumId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Artiste artiste = new Artiste(rs.getInt("artiste_id"), rs.getString("artiste_nom"));
+                Album album = new Album(rs.getInt("album_id"), rs.getString("album_nom"), artiste);
+                Chanson chanson = new Chanson(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        album,
+                        artiste,
+                        rs.getString("duree"),
+                        rs.getString("chemin_fichier")
+                );
+                chansons.add(chanson);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return chansons;
+    }
+
     public void addChanson(String path, String filename, String title, int artisteId, int albumId, String duree) {
         String sql = "INSERT INTO chansons (path, filename, title, artist_id, album_id, duree) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -61,6 +95,33 @@ public class ChansonDAO {
             e.printStackTrace();
         }
         return chansons;
+    }
+
+    public static Chanson getChansonById(int chansonId) {
+        try (Connection conn = DatabaseManager.connect();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM chansons WHERE id = ?")) {
+
+            stmt.setInt(1, chansonId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int albumId = rs.getInt("album_id");
+                Album album = AlbumDAO.getAlbumById(albumId);
+                Artiste artiste = album.getArtiste();
+
+                return new Chanson(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        album,
+                        artiste,
+                        rs.getString("duree"),
+                        rs.getString("path")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
