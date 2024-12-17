@@ -2,29 +2,40 @@ package com.myplayerr.view;
 
 import com.myplayerr.database.ChansonDAO;
 import com.myplayerr.model.Chanson;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
 
 public class ChansonView {
+
     public VBox getView() {
-        VBox vbox = new VBox();
-        vbox.setSpacing(10);
+        VBox rootVBox = new VBox();
+        rootVBox.setSpacing(10);
+        rootVBox.setAlignment(Pos.TOP_CENTER);
 
-        Label title = new Label("Chansons");
-        title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+        Label title = new Label("Toutes les chansons");
+        title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;");
 
-        ListView<String> listView = new ListView<>();
-        ChansonDAO chansonDAO = new ChansonDAO();
-        List<Chanson> chansons = chansonDAO.getAllChansons();
+        ScrollPane scrollPane = new ScrollPane();
+        VBox songList = new VBox();
+        songList.setSpacing(15);
+        songList.setAlignment(Pos.TOP_LEFT);
+
+        List<Chanson> chansons = new ChansonDAO().getAllChansons();
 
         for (Chanson chanson : chansons) {
-            listView.getItems().add(chanson.getTitre() + " - " + chanson.getArtiste().getNom() + " (" + chanson.getAlbum().getNom() + ")");
+            songList.getChildren().add(ChansonViewBox.createChansonBox(chanson));
         }
 
-        vbox.getChildren().addAll(title, listView);
-        return vbox;
+        scrollPane.setContent(songList);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("scroll-pane");
+
+        rootVBox.getChildren().addAll(title, scrollPane);
+        rootVBox.setStyle("-fx-background-color: #2b2b2b; -fx-padding: 20;");
+        return rootVBox;
     }
 }

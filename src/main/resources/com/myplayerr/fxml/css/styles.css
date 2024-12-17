@@ -10,6 +10,41 @@
     -fx-background-color: #2b2b2b; /* Fond sombre */
     -fx-padding: 5;
 }
+.scroll-pane {
+    -fx-background-color: #2b2b2b;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.hbox-song {
+    -fx-padding: 10;
+    -fx-background-color: #333333;
+    -fx-background-radius: 8;
+}
+
+.hbox-song:hover {
+    -fx-background-color: #444444;
+    -fx-cursor: hand;
+}
+
+.scroll-pane {
+    -fx-background-color: #2b2b2b; /* Fond sombre */
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #2b2b2b; /* Fond sombre pour le contenu */
+}
+
+.scroll-pane .content {
+    -fx-background-color: #2b2b2b; /* Fond sombre pour les enfants */
+}
+
+.label {
+    -fx-text-fill: white; /* Texte en blanc */
+    -fx-font-size: 14px;
+}
 
 .menu {
     -fx-text-fill: #dcdcdc; /* Texte des menus */
@@ -37,7 +72,7 @@
     -fx-font-size: 16px;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
-    -fx-padding: 10;
+    -fx-padding: 20;
 }
 
 .button:hover {

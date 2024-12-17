@@ -55,8 +55,8 @@ public class DatabaseManager {
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "playlist_id INTEGER NOT NULL, " +
                     "chanson_id INTEGER NOT NULL, " +
-                    "FOREIGN KEY(playlist_id) REFERENCES playlists(id) ON DELETE CASCADE, " +
-                    "FOREIGN KEY(chanson_id) REFERENCES chansons(id) ON DELETE CASCADE" +
+                    "FOREIGN KEY(playlist_id) REFERENCES playlists(id), " +
+                    "FOREIGN KEY(chanson_id) REFERENCES chansons(id)" +
                     ");";
 
             // Create table for app settings

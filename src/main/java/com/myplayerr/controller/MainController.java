@@ -3,10 +3,7 @@ package com.myplayerr.controller;
 import com.myplayerr.database.SettingDAO;
 import com.myplayerr.service.ChansonService;
 import com.myplayerr.service.SettingService;
-import com.myplayerr.view.AlbumView;
-import com.myplayerr.view.ArtisteView;
-import com.myplayerr.view.ChansonView;
-import com.myplayerr.view.PlaylistView;
+import com.myplayerr.view.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
@@ -36,12 +33,12 @@ public class MainController {
 
     @FXML
     private void showArtistes() {
-        mainPane.setCenter(new ArtisteView().getView());
+        mainPane.setCenter(new ArtisteView(mainPane).getView());
     }
 
     @FXML
     private void showAlbums() {
-        mainPane.setCenter(new AlbumView().getView());
+        mainPane.setCenter(new AlbumView(mainPane).getView());
     }
 
     @FXML
@@ -49,6 +46,15 @@ public class MainController {
         mainPane.setCenter(new ChansonView().getView());
     }
 
+    @FXML
+    public void showRechercheView() {
+        new RechercheView(mainPane).getView();
+    }
+
+    @FXML
+    public void showAjoutChansonView() {
+        new AjoutChansonView(mainPane).getView();
+    }
 
     @FXML
     private void changePathMusic() {
