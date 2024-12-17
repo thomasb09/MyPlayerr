@@ -5,6 +5,7 @@ module com.myplayerr {
     requires mp3agic;
     requires okhttp3;
     requires org.json;
+    requires javafx.media;
 
 
     opens com.myplayerr to javafx.fxml;

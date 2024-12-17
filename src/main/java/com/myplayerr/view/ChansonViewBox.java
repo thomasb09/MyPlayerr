@@ -1,5 +1,6 @@
 package com.myplayerr.view;
 
+import com.myplayerr.controller.MainController;
 import com.myplayerr.model.Chanson;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -11,13 +12,19 @@ import java.net.URL;
 
 public class ChansonViewBox {
 
+    public static MainController controller;
+
+    public static void setController(MainController controller){
+        ChansonViewBox.controller = controller;
+    }
+
     public static HBox createChansonBox(Chanson chanson) {
         HBox chansonBox = new HBox();
         chansonBox.setSpacing(20);
         chansonBox.setAlignment(Pos.CENTER_LEFT);
         chansonBox.setStyle("-fx-padding: 10; -fx-background-color: #333333; -fx-background-radius: 8;");
 
-        Label songLabel = new Label(chanson.getTitre() + " - " + chanson.getArtiste().getNom() + " (" + chanson.getAlbum().getNom() + ")");
+        Label songLabel = new Label(chanson.getTitre() + " - " + chanson.getDuree());
         songLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
 
         String imagePath = "/images/albums/" + "img.png";//chanson.getAlbum().getImagePath();
@@ -29,6 +36,9 @@ public class ChansonViewBox {
         smallAlbumImage.setPreserveRatio(true);
 
         chansonBox.getChildren().addAll(songLabel, smallAlbumImage);
+
+        chansonBox.setOnMouseClicked(event -> controller.setCurrentSong(chanson.getCheminFichier(), chanson.getTitre()));
+
         return chansonBox;
     }
 }

@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-public class ChansonService {
+public class MP3FileService {
 
     private final ChansonDAO chansonDAO = new ChansonDAO();
     private final AudDService audDService = new AudDService();
@@ -34,9 +34,9 @@ public class ChansonService {
         String fileName = filePath.getFileName().toString();
 
         if (!chansonDAO.chansonExists(absolutePath)) {
-            String titleName = "Unknown Title";
-            String artistName = "Unknown Artist";
-            String albumName = "Unknown Album";
+            String titleName;
+            String artistName;
+            String albumName;
             String duration = "0:00";
 
             try {

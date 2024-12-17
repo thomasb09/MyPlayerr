@@ -9,7 +9,7 @@ import java.io.File;
 public class SettingService {
 
     private final SettingDAO settingsDAO = new SettingDAO();
-    private final ChansonService chansonService = new ChansonService();
+    private final MP3FileService MP3FileService = new MP3FileService();
 
     public void setPathMusic() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -21,7 +21,7 @@ public class SettingService {
 
             settingsDAO.saveSetting("mp3Path", selectedPath);
 
-            chansonService.scanAndImportMusic(selectedPath);
+            MP3FileService.scanAndImportMusic(selectedPath);
         }
     }
 }
