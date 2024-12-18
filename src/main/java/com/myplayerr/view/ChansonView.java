@@ -11,6 +11,12 @@ import java.util.List;
 
 public class ChansonView {
 
+    private ChansonViewBox _chansonViewBox;
+
+    public void setDependance(ChansonViewBox chansonViewBox) {
+        _chansonViewBox = chansonViewBox;
+    }
+
     public VBox getView() {
         VBox rootVBox = new VBox();
         rootVBox.setSpacing(10);
@@ -27,7 +33,7 @@ public class ChansonView {
         List<Chanson> chansons = new ChansonDAO().getAllChansons();
 
         for (Chanson chanson : chansons) {
-            songList.getChildren().add(ChansonViewBox.createChansonBox(chanson));
+            songList.getChildren().add(_chansonViewBox.createChansonBox(chanson));
         }
 
         scrollPane.setContent(songList);

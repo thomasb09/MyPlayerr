@@ -7,13 +7,14 @@ import java.io.File;
 
 public class PlayerService {
 
-    private MediaPlayer currentPlayer;
+    private MediaPlayer _currentPlayer;
 
-    private boolean isPlaying = false;
+    private boolean _isPlaying = false;
+    private String _currentSong;
 
     public void playSong(String filePath) {
-        if (currentPlayer != null) {
-            currentPlayer.stop();
+        if (_currentPlayer != null) {
+            _currentPlayer.stop();
         }
 
         try {
@@ -23,9 +24,10 @@ public class PlayerService {
             }
 
             Media media = new Media(mp3File.toURI().toString());
-            currentPlayer = new MediaPlayer(media);
-            currentPlayer.play();
-            isPlaying = true;
+            _currentPlayer = new MediaPlayer(media);
+            _currentPlayer.play();
+            _currentSong = filePath;
+            _isPlaying = true;
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Erreur lors de la lecture du fichier : " + filePath);
@@ -33,22 +35,26 @@ public class PlayerService {
     }
 
     public void playPauseSong(){
-        if (currentPlayer != null) {
-            if (isPlaying){
-                currentPlayer.pause();
-                isPlaying = false;
+        if (_currentPlayer != null) {
+            if (_isPlaying){
+                _currentPlayer.pause();
+                _isPlaying = false;
             }
             else {
-                currentPlayer.play();
-                isPlaying = true;
+                _currentPlayer.play();
+                _isPlaying = true;
             }
         }
     }
 
     public void stopSong() {
-        if (currentPlayer != null) {
-            currentPlayer.stop();
-            isPlaying = false;
+        if (_currentPlayer != null) {
+            _currentPlayer.stop();
+            _isPlaying = false;
         }
+    }
+
+    public String get_currentSong(){
+        return _currentSong;
     }
 }

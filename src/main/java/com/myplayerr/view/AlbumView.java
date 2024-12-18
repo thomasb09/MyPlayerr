@@ -16,10 +16,17 @@ import java.util.List;
 
 public class AlbumView {
 
-    private final BorderPane pane;
+    private BorderPane _pane;
+    private AlbumDAO _albumDAO;
+    private AlbumSongsView _albumSongsView;
 
-    public AlbumView(BorderPane pane) {
-        this.pane = pane;
+    public AlbumView() {
+    }
+
+    public void setDependance(BorderPane pane, AlbumDAO albumDAO, AlbumSongsView albumSongsView) {
+        _pane = pane;
+        _albumDAO = albumDAO;
+        _albumSongsView = albumSongsView;
     }
 
     public VBox getView() {
@@ -42,11 +49,11 @@ public class AlbumView {
         scrollPane.setPrefViewportHeight(600);
         scrollPane.getStyleClass().add("scroll-pane");
 
-        List<Album> albums = AlbumDAO.getAllAlbums();
+        List<Album> albums = _albumDAO.getAllAlbums();
 
         for (Album album : albums) {
             VBox albumBox = createAlbumBox(album);
-            albumBox.setOnMouseClicked(event -> AlbumViewUtils.showAlbumSongs(pane, album));
+            albumBox.setOnMouseClicked(event -> _pane.setCenter(_albumSongsView.getAlbumSongs(album)));
             albumPane.getChildren().add(albumBox);
         }
 

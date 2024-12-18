@@ -6,14 +6,21 @@ import com.myplayerr.model.Chanson;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
 
-public class AlbumViewUtils {
+public class AlbumSongsView {
 
-    public static void showAlbumSongs(BorderPane pane, Album album) {
+    private ChansonDAO _chansonDAO;
+    private ChansonViewBox _chansonViewBox;
+
+    public void setDependance(ChansonDAO chansonDAO, ChansonViewBox chansonViewBox) {
+        _chansonDAO = chansonDAO;
+        _chansonViewBox = chansonViewBox;
+    }
+
+    public VBox getAlbumSongs(Album album) {
         VBox songVBox = new VBox();
         songVBox.setSpacing(20);
         songVBox.setAlignment(Pos.TOP_CENTER);
@@ -27,9 +34,9 @@ public class AlbumViewUtils {
         songList.setSpacing(15);
         songList.setAlignment(Pos.TOP_LEFT);
 
-        List<Chanson> chansons = ChansonDAO.getChansonByAlbum(album.getId());
+        List<Chanson> chansons = _chansonDAO.getChansonByAlbum(album.getId());
         for (Chanson chanson : chansons) {
-            songList.getChildren().add(ChansonViewBox.createChansonBox(chanson));
+            songList.getChildren().add(_chansonViewBox.createChansonBox(chanson));
         }
 
         scrollPane.setContent(songList);
@@ -37,6 +44,7 @@ public class AlbumViewUtils {
         scrollPane.getStyleClass().add("scroll-pane");
 
         songVBox.getChildren().addAll(albumTitle, scrollPane);
-        pane.setCenter(songVBox);
+
+        return songVBox;
     }
 }

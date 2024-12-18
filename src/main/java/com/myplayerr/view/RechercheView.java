@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -15,13 +14,16 @@ import java.util.stream.Collectors;
 
 public class RechercheView {
 
-    private final BorderPane pane;
+    private ChansonViewBox _chansonViewBox;
 
-    public RechercheView(BorderPane pane) {
-        this.pane = pane;
+    public RechercheView() {
     }
 
-    public void getView() {
+    public void setDependance(ChansonViewBox chansonViewBox) {
+        _chansonViewBox = chansonViewBox;
+    }
+
+    public VBox getView() {
         VBox rootVBox = new VBox();
         rootVBox.setSpacing(15);
         rootVBox.setAlignment(Pos.TOP_CENTER);
@@ -55,14 +57,14 @@ public class RechercheView {
             List<Chanson> results = searchChansons(query);
             resultList.getChildren().clear();
             results.stream()
-                    .map(ChansonViewBox::createChansonBox)
+                    .map(_chansonViewBox::createChansonBox)
                     .forEach(resultList.getChildren()::add);
         });
 
         searchBox.getChildren().addAll(searchField, searchButton);
         rootVBox.getChildren().addAll(titleLabel, searchBox, scrollPane);
 
-        pane.setCenter(rootVBox);
+        return rootVBox;
     }
 
     private List<Chanson> searchChansons(String query) {

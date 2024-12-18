@@ -12,13 +12,13 @@ import java.net.URL;
 
 public class ChansonViewBox {
 
-    public static MainController controller;
+    public MainController _controller;
 
-    public static void setController(MainController controller){
-        ChansonViewBox.controller = controller;
+    public void setController(MainController controller){
+        _controller = controller;
     }
 
-    public static HBox createChansonBox(Chanson chanson) {
+    public HBox createChansonBox(Chanson chanson) {
         HBox chansonBox = new HBox();
         chansonBox.setSpacing(20);
         chansonBox.setAlignment(Pos.CENTER_LEFT);
@@ -37,7 +37,7 @@ public class ChansonViewBox {
 
         chansonBox.getChildren().addAll(songLabel, smallAlbumImage);
 
-        chansonBox.setOnMouseClicked(event -> controller.setCurrentSong(chanson.getCheminFichier(), chanson.getTitre()));
+        chansonBox.setOnMouseClicked(event -> _controller.setCurrentSong(chanson.getCheminFichier(), chanson.getTitre()));
 
         return chansonBox;
     }

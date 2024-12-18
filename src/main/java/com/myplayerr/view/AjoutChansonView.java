@@ -14,13 +14,16 @@ import java.util.List;
 
 public class AjoutChansonView {
 
-    private final BorderPane pane;
+    private BorderPane _pane;
 
-    public AjoutChansonView(BorderPane pane) {
-        this.pane = pane;
+    public AjoutChansonView() {
     }
 
-    public void getView() {
+    public void setPane(BorderPane pane){
+        _pane = pane;
+    }
+
+    public VBox getView() {
         VBox rootVBox = new VBox();
         rootVBox.setSpacing(15);
         rootVBox.setAlignment(Pos.TOP_CENTER);
@@ -59,7 +62,7 @@ public class AjoutChansonView {
         searchBox.getChildren().addAll(searchField, searchButton);
         rootVBox.getChildren().addAll(titleLabel, searchBox, scrollPane);
 
-        pane.setCenter(rootVBox);
+        return rootVBox;
     }
 
     private List<String> searchSongsFromAPI(String query) {

@@ -9,9 +9,14 @@ import java.util.List;
 
 public class PlaylistDAO {
 
-    private final ChansonDAO chansonDAO = new ChansonDAO();
+    private ChansonDAO _chansonDAO;
 
-    public static void addPlaylist(Playlist playlist) {
+    public void setDependance(ChansonDAO chansonDAO) {
+        _chansonDAO = chansonDAO;
+    }
+
+    public void addPlaylist(Playlist playlist) {
+
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO playlists (nom) VALUES (?)", Statement.RETURN_GENERATED_KEYS)) {
 
@@ -27,7 +32,7 @@ public class PlaylistDAO {
         }
     }
 
-    public static List<Playlist> getAllPlaylists() {
+    public List<Playlist> getAllPlaylists() {
         List<Playlist> playlists = new ArrayList<>();
         try (Connection conn = DatabaseManager.connect();
              Statement stmt = conn.createStatement();
@@ -44,7 +49,7 @@ public class PlaylistDAO {
         return playlists;
     }
 
-    public static void addChansonToPlaylist(int playlistId, int chansonId) {
+    public void addChansonToPlaylist(int playlistId, int chansonId) {
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO playlist_chansons (playlist_id, chanson_id) VALUES (?, ?)")) {
 
@@ -56,7 +61,7 @@ public class PlaylistDAO {
         }
     }
 
-    public static void removeChansonFromPlaylist(int playlistId, int chansonId) {
+    public void removeChansonFromPlaylist(int playlistId, int chansonId) {
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement("DELETE FROM playlist_chansons WHERE playlist_id = ? AND chanson_id = ?")) {
 
@@ -68,7 +73,7 @@ public class PlaylistDAO {
         }
     }
 
-    private static List<Chanson> getChansonsForPlaylist(int playlistId) {
+    private List<Chanson> getChansonsForPlaylist(int playlistId) {
         List<Chanson> chansons = new ArrayList<>();
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(
@@ -80,7 +85,7 @@ public class PlaylistDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                chansons.add(ChansonDAO.getChansonById(rs.getInt("id")));
+                chansons.add(_chansonDAO.getChansonById(rs.getInt("id")));
             }
         } catch (SQLException e) {
             e.printStackTrace();

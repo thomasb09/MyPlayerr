@@ -18,10 +18,19 @@ import java.util.List;
 
 public class ArtisteView {
 
-    private final BorderPane pane;
+    private BorderPane _pane;
+    private AlbumDAO _albumDAO;
+    private ArtisteDAO _artisteDAO;
+    private AlbumSongsView _albumSongsView;
 
-    public ArtisteView(BorderPane pane) {
-        this.pane = pane;
+    public ArtisteView() {
+    }
+
+    public void setDependance(BorderPane pane, AlbumDAO albumDAO, ArtisteDAO artisteDAO, AlbumSongsView albumSongsView) {
+        _pane = pane;
+        _albumDAO = albumDAO;
+        _artisteDAO = artisteDAO;
+        _albumSongsView = albumSongsView;
     }
 
     public VBox getView() {
@@ -43,7 +52,7 @@ public class ArtisteView {
         scrollPane.setFitToWidth(true);
         scrollPane.getStyleClass().add("scroll-pane");
 
-        List<Artiste> artistes = ArtisteDAO.getAllArtistes();
+        List<Artiste> artistes = _artisteDAO.getAllArtistes();
 
         for (Artiste artiste : artistes) {
             VBox artisteBox = createArtisteBox(artiste);
@@ -78,7 +87,7 @@ public class ArtisteView {
     }
 
     private void showAlbumsByArtiste(Artiste artiste) {
-        List<Album> albums = AlbumDAO.getAlbumsByArtiste(artiste.getId());
+        List<Album> albums = _albumDAO.getAlbumsByArtiste(artiste.getId());
 
         FlowPane albumPane = new FlowPane();
         albumPane.setHgap(20);
@@ -92,7 +101,7 @@ public class ArtisteView {
 
         for (Album album : albums) {
             VBox albumBox = createAlbumBox(album);
-            albumBox.setOnMouseClicked(event -> AlbumViewUtils.showAlbumSongs(pane, album));
+            albumBox.setOnMouseClicked(event -> _pane.setCenter(_albumSongsView.getAlbumSongs(album)));
             albumPaneView.albumPane().getChildren().add(albumBox);
         }
 
@@ -102,7 +111,7 @@ public class ArtisteView {
         albumView.setStyle("-fx-background-color: #2b2b2b; -fx-padding: 20;");
         albumView.getChildren().addAll(new Label("Albums de " + artiste.getNom()), albumPaneView.scrollPane());
 
-        pane.setCenter(albumView);
+        _pane.setCenter(albumView);
     }
 
     private record AlbumPaneView(FlowPane albumPane, ScrollPane scrollPane) {

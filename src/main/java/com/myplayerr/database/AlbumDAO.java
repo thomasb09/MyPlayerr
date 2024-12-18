@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlbumDAO {
+
+    private ArtisteDAO _artisteDAO;
+
+    public void setDependance(ArtisteDAO artisteDAO) {
+        _artisteDAO = artisteDAO;
+    }
+
     public Album getAlbumByNameAndArtist(String nom, int artisteId) {
         String sql = "SELECT * FROM albums WHERE nom = ? AND artiste_id = ?";
         try (Connection conn = DatabaseManager.connect();
@@ -38,7 +45,7 @@ public class AlbumDAO {
         }
     }
 
-    public static List<Album> getAllAlbums() {
+    public List<Album> getAllAlbums() {
         List<Album> albums = new ArrayList<>();
         String sql = "SELECT albums.id, albums.nom, artistes.nom AS artiste_nom, albums.artiste_id AS artiste_id FROM albums " +
                 "JOIN artistes ON albums.artiste_id = artistes.id";
@@ -57,7 +64,7 @@ public class AlbumDAO {
         return albums;
     }
 
-    public static Album getAlbumById(int albumId) {
+    public Album getAlbumById(int albumId) {
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM albums WHERE id = ?")) {
 
@@ -65,7 +72,7 @@ public class AlbumDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                Artiste artiste = ArtisteDAO.getArtisteById(rs.getInt("artiste_id"));
+                Artiste artiste = _artisteDAO.getArtisteById(rs.getInt("artiste_id"));
 
                 return new Album(
                         rs.getInt("id"),
@@ -79,7 +86,7 @@ public class AlbumDAO {
         return null;
     }
 
-    public static List<Album> getAlbumsByArtiste(int artisteId) {
+    public List<Album> getAlbumsByArtiste(int artisteId) {
         List<Album> albums = new ArrayList<>();
         String sql = "SELECT * FROM albums WHERE artiste_id = ?";
 
