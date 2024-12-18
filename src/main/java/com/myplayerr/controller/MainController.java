@@ -5,6 +5,7 @@ import com.myplayerr.service.MP3FileService;
 import com.myplayerr.service.PlayerService;
 import com.myplayerr.service.SettingService;
 import com.myplayerr.view.*;
+import com.myplayerr.view.utils.ChansonViewBox;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -100,12 +101,12 @@ public class MainController {
 
     @FXML
     private void showAlbums() {
-        mainPane.setCenter(_albumView.getView());
+        mainPane.setCenter(_albumView.getView(null));
     }
 
     @FXML
     private void showChansons() {
-        mainPane.setCenter(_chansonView.getView());
+        mainPane.setCenter(_chansonView.getView(null));
     }
 
     @FXML

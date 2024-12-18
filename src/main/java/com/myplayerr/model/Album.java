@@ -3,11 +3,11 @@ package com.myplayerr.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Album {
+public class Album implements EntityBox{
     private int id;
     private String nom;
     private Artiste artiste;
-    private List<Chanson> chansons;
+    private final List<Chanson> chansons;
 
     public Album(int id, String nom, Artiste artiste) {
         this.id = id;

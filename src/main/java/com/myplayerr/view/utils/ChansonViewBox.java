@@ -1,4 +1,4 @@
-package com.myplayerr.view;
+package com.myplayerr.view.utils;
 
 import com.myplayerr.controller.MainController;
 import com.myplayerr.model.Chanson;
@@ -29,7 +29,7 @@ public class ChansonViewBox {
 
         String imagePath = "/images/albums/" + "img.png";//chanson.getAlbum().getImagePath();
         URL imageUrl = ChansonViewBox.class.getResource(imagePath);
-        Image albumImage =  new Image(imageUrl.toExternalForm());
+        Image albumImage = new Image(imageUrl.toExternalForm());
         ImageView smallAlbumImage = new ImageView(albumImage);
         smallAlbumImage.setFitWidth(40);
         smallAlbumImage.setFitHeight(40);

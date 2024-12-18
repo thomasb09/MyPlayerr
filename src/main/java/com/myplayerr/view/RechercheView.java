@@ -1,12 +1,11 @@
 package com.myplayerr.view;
 
 import com.myplayerr.model.Chanson;
-import javafx.geometry.Pos;
+import com.myplayerr.view.utils.ChansonViewBox;
+import com.myplayerr.view.utils.ViewUtils;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -16,41 +15,20 @@ public class RechercheView {
 
     private ChansonViewBox _chansonViewBox;
 
-    public RechercheView() {
-    }
-
     public void setDependance(ChansonViewBox chansonViewBox) {
         _chansonViewBox = chansonViewBox;
     }
 
     public VBox getView() {
-        VBox rootVBox = new VBox();
-        rootVBox.setSpacing(15);
-        rootVBox.setAlignment(Pos.TOP_CENTER);
-        rootVBox.setStyle("-fx-background-color: #2b2b2b; -fx-padding: 20;");
-
-        Label titleLabel = new Label("Rechercher une Chanson");
-        titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;");
-
-        HBox searchBox = new HBox();
-        searchBox.setSpacing(10);
-        searchBox.setAlignment(Pos.CENTER);
+        VBox rootVBox = ViewUtils.createRootVBox("Rechercher une Chanson");
 
         TextField searchField = new TextField();
         searchField.setPromptText("Entrez un nom, titre ou album...");
-        searchField.setStyle("-fx-font-size: 14px; -fx-pref-width: 300;");
 
         Button searchButton = new Button("Rechercher");
-        searchButton.setStyle("-fx-background-color: #1abc9c; -fx-text-fill: white;");
 
-        VBox resultList = new VBox();
-        resultList.setSpacing(10);
-        resultList.setAlignment(Pos.TOP_LEFT);
-
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(resultList);
-        scrollPane.setFitToWidth(true);
-        scrollPane.getStyleClass().add("scroll-pane");
+        VBox resultList = ViewUtils.createResultList();
+        ScrollPane scrollPane = ViewUtils.createScrollPane(resultList);
 
         searchButton.setOnAction(event -> {
             String query = searchField.getText();
@@ -61,8 +39,7 @@ public class RechercheView {
                     .forEach(resultList.getChildren()::add);
         });
 
-        searchBox.getChildren().addAll(searchField, searchButton);
-        rootVBox.getChildren().addAll(titleLabel, searchBox, scrollPane);
+        rootVBox.getChildren().addAll(ViewUtils.createSearchBox(searchField, searchButton), scrollPane);
 
         return rootVBox;
     }

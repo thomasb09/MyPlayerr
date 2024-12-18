@@ -2,86 +2,52 @@ package com.myplayerr.view;
 
 import com.myplayerr.database.AlbumDAO;
 import com.myplayerr.model.Album;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
+import com.myplayerr.model.Artiste;
+import com.myplayerr.view.utils.AlbumArtisteView;
+import com.myplayerr.view.utils.ViewUtils;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
 import java.util.List;
 
 public class AlbumView {
 
     private BorderPane _pane;
     private AlbumDAO _albumDAO;
-    private AlbumSongsView _albumSongsView;
+    private ChansonView _chansonView;
+    private AlbumArtisteView _albumArtisteView;
 
     public AlbumView() {
     }
 
-    public void setDependance(BorderPane pane, AlbumDAO albumDAO, AlbumSongsView albumSongsView) {
+    public void setDependance(BorderPane pane, AlbumDAO albumDAO, ChansonView chansonView, AlbumArtisteView albumArtisteView) {
         _pane = pane;
         _albumDAO = albumDAO;
-        _albumSongsView = albumSongsView;
+        _chansonView = chansonView;
+        _albumArtisteView = albumArtisteView;
     }
 
-    public VBox getView() {
-        VBox rootVBox = new VBox();
-        rootVBox.setSpacing(10);
-        rootVBox.setAlignment(Pos.TOP_CENTER);
-        rootVBox.setStyle("-fx-background-color: #2b2b2b;");
+    public VBox getView(Artiste artiste) {
+        List<Album> albums;
+        albums = (null == artiste) ?
+                _albumDAO.getAllAlbums() :
+                _albumDAO.getAlbumsByArtiste(artiste.getId());
 
-        Label title = new Label("Albums");
-        title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;");
+        VBox rootVBox = ViewUtils.createRootVBox((null == artiste) ? "Albums" : "Albums de : " + artiste.getNom());
 
-        FlowPane albumPane = new FlowPane();
-        albumPane.setHgap(20);
-        albumPane.setVgap(20);
-        albumPane.setAlignment(Pos.CENTER);
+        FlowPane albumPane = ViewUtils.createFlowPane();
 
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(albumPane);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setPrefViewportHeight(600);
-        scrollPane.getStyleClass().add("scroll-pane");
-
-        List<Album> albums = _albumDAO.getAllAlbums();
+        ScrollPane scrollPane = ViewUtils.createScrollPane(albumPane);
 
         for (Album album : albums) {
-            VBox albumBox = createAlbumBox(album);
-            albumBox.setOnMouseClicked(event -> _pane.setCenter(_albumSongsView.getAlbumSongs(album)));
+            VBox albumBox = _albumArtisteView.createEntityBox(album);
+            albumBox.setOnMouseClicked(event -> _pane.setCenter(_chansonView.getView(album)));
             albumPane.getChildren().add(albumBox);
         }
 
-        rootVBox.getChildren().addAll(title, scrollPane);
+        rootVBox.getChildren().addAll(scrollPane);
         return rootVBox;
-    }
-
-    private VBox createAlbumBox(Album album) {
-        VBox albumBox = new VBox();
-        albumBox.setAlignment(Pos.CENTER);
-        albumBox.setSpacing(5);
-        albumBox.setStyle("-fx-padding: 10; -fx-background-color: #333333; -fx-background-radius: 8;");
-
-        String imagePath = "/images/albums/" + "img.png"; // album.getImagePath();
-        URL imageUrl = getClass().getResource(imagePath);
-        Image albumImage = (imageUrl != null)
-                ? new Image(imageUrl.toExternalForm())
-                : new Image(getClass().getResource("/images/default.png").toExternalForm());
-
-        ImageView imageView = new ImageView(albumImage);
-        imageView.setFitWidth(150);
-        imageView.setFitHeight(150);
-        imageView.setPreserveRatio(true);
-
-        Label albumLabel = new Label(album.getNom());
-        albumLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
-
-        albumBox.getChildren().addAll(imageView, albumLabel);
-        return albumBox;
     }
 }
