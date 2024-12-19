@@ -36,7 +36,7 @@ public class ArtisteDAO {
         }
     }
 
-    public static List<Artiste> getAllArtistes() {
+    public List<Artiste> getAllArtistes() {
         List<Artiste> artistes = new ArrayList<>();
         String sql = "SELECT * FROM artistes";
 
@@ -53,7 +53,7 @@ public class ArtisteDAO {
         return artistes;
     }
 
-    public static Artiste getArtisteById(int artisteId) {
+    public Artiste getArtisteById(int artisteId) {
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM artistes WHERE id = ?")) {
 

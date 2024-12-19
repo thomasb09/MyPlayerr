@@ -10,7 +10,13 @@ import java.util.List;
 
 public class ChansonDAO {
 
-    public static List<Chanson> getChansonByAlbum(int albumId) {
+    private AlbumDAO _albumDAO;
+
+    public void setDependance(AlbumDAO albumDAO) {
+        _albumDAO = albumDAO;
+    }
+
+    public List<Chanson> getChansonByAlbum(int albumId) {
         List<Chanson> chansons = new ArrayList<>();
         String sql = "SELECT chansons.id, chansons.title, chansons.duree, chansons.path, " +
                 "albums.id AS album_id, albums.nom AS album_nom, artistes.id AS artiste_id, artistes.nom AS artiste_nom " +
@@ -97,7 +103,7 @@ public class ChansonDAO {
         return chansons;
     }
 
-    public static Chanson getChansonById(int chansonId) {
+    public Chanson getChansonById(int chansonId) {
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM chansons WHERE id = ?")) {
 
@@ -106,7 +112,7 @@ public class ChansonDAO {
 
             if (rs.next()) {
                 int albumId = rs.getInt("album_id");
-                Album album = AlbumDAO.getAlbumById(albumId);
+                Album album = _albumDAO.getAlbumById(albumId);
                 Artiste artiste = album.getArtiste();
 
                 return new Chanson(

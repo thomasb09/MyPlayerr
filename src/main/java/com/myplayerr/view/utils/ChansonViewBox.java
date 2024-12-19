@@ -1,4 +1,4 @@
-package com.myplayerr.view;
+package com.myplayerr.view.utils;
 
 import com.myplayerr.controller.MainController;
 import com.myplayerr.model.Chanson;
@@ -12,13 +12,13 @@ import java.net.URL;
 
 public class ChansonViewBox {
 
-    public static MainController controller;
+    public MainController _controller;
 
-    public static void setController(MainController controller){
-        ChansonViewBox.controller = controller;
+    public void setController(MainController controller){
+        _controller = controller;
     }
 
-    public static HBox createChansonBox(Chanson chanson) {
+    public HBox createChansonBox(Chanson chanson) {
         HBox chansonBox = new HBox();
         chansonBox.setSpacing(20);
         chansonBox.setAlignment(Pos.CENTER_LEFT);
@@ -29,7 +29,7 @@ public class ChansonViewBox {
 
         String imagePath = "/images/albums/" + "img.png";//chanson.getAlbum().getImagePath();
         URL imageUrl = ChansonViewBox.class.getResource(imagePath);
-        Image albumImage =  new Image(imageUrl.toExternalForm());
+        Image albumImage = new Image(imageUrl.toExternalForm());
         ImageView smallAlbumImage = new ImageView(albumImage);
         smallAlbumImage.setFitWidth(40);
         smallAlbumImage.setFitHeight(40);
@@ -37,7 +37,7 @@ public class ChansonViewBox {
 
         chansonBox.getChildren().addAll(songLabel, smallAlbumImage);
 
-        chansonBox.setOnMouseClicked(event -> controller.setCurrentSong(chanson.getCheminFichier(), chanson.getTitre()));
+        chansonBox.setOnMouseClicked(event -> _controller.setCurrentSong(chanson.getCheminFichier(), chanson.getTitre()));
 
         return chansonBox;
     }

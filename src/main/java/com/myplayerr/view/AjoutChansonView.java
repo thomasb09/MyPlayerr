@@ -1,11 +1,11 @@
 package com.myplayerr.view;
 
+import com.myplayerr.view.utils.ViewUtils;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -14,40 +14,16 @@ import java.util.List;
 
 public class AjoutChansonView {
 
-    private final BorderPane pane;
-
-    public AjoutChansonView(BorderPane pane) {
-        this.pane = pane;
-    }
-
-    public void getView() {
-        VBox rootVBox = new VBox();
-        rootVBox.setSpacing(15);
-        rootVBox.setAlignment(Pos.TOP_CENTER);
-        rootVBox.setStyle("-fx-background-color: #2b2b2b; -fx-padding: 20;");
-
-        Label titleLabel = new Label("Ajouter une Chanson");
-        titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;");
-
-        HBox searchBox = new HBox();
-        searchBox.setSpacing(10);
-        searchBox.setAlignment(Pos.CENTER);
+    public VBox getView() {
+        VBox rootVBox = ViewUtils.createRootVBox("Ajouter une Chanson");
 
         TextField searchField = new TextField();
         searchField.setPromptText("Entrez un titre ou un critère...");
-        searchField.setStyle("-fx-font-size: 14px; -fx-pref-width: 300;");
 
         Button searchButton = new Button("Rechercher");
-        searchButton.setStyle("-fx-background-color: #1abc9c; -fx-text-fill: white;");
 
-        VBox resultList = new VBox();
-        resultList.setSpacing(10);
-        resultList.setAlignment(Pos.TOP_LEFT);
-
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(resultList);
-        scrollPane.setFitToWidth(true);
-        scrollPane.getStyleClass().add("scroll-pane");
+        VBox resultList = ViewUtils.createResultList();
+        ScrollPane scrollPane = ViewUtils.createScrollPane(resultList);
 
         searchButton.setOnAction(event -> {
             String query = searchField.getText();
@@ -56,10 +32,9 @@ public class AjoutChansonView {
             results.forEach(result -> resultList.getChildren().add(createResultBox(result)));
         });
 
-        searchBox.getChildren().addAll(searchField, searchButton);
-        rootVBox.getChildren().addAll(titleLabel, searchBox, scrollPane);
+        rootVBox.getChildren().addAll(ViewUtils.createSearchBox(searchField, searchButton), scrollPane);
 
-        pane.setCenter(rootVBox);
+        return rootVBox;
     }
 
     private List<String> searchSongsFromAPI(String query) {

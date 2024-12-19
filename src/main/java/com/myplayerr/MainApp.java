@@ -13,11 +13,18 @@ public class MainApp extends Application {
         DatabaseManager.initializeDatabase();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/mainView.fxml"));
+
+        AppContext context = AppContext.getInstance();
+
+        loader.setController(context.getMainController());
+
         Scene scene = new Scene(loader.load());
         primaryStage.setScene(scene);
         primaryStage.setTitle("MyPlayerr");
         primaryStage.setMaximized(true);
         primaryStage.show();
+
+        context.setDependance();
     }
 
     public static void main(String[] args) {

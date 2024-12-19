@@ -97,8 +97,7 @@ public class MP3FileService {
         File originalFile = new File(filePath);
         if (originalFile.delete()) {
             File updatedFile = new File(tempFilePath);
-            if (!updatedFile.renameTo(originalFile)) {
-            }
+            updatedFile.renameTo(originalFile);
         }
     }
 

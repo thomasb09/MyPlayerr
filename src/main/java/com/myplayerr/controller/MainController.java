@@ -5,7 +5,7 @@ import com.myplayerr.service.MP3FileService;
 import com.myplayerr.service.PlayerService;
 import com.myplayerr.service.SettingService;
 import com.myplayerr.view.*;
-import javafx.event.ActionEvent;
+import com.myplayerr.view.utils.ChansonViewBox;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -19,29 +19,64 @@ public class MainController {
     @FXML
     private Label songLabel;
 
-    private final PlayerService playerService = new PlayerService();
-    private final MP3FileService MP3FileService = new MP3FileService();
-    private final SettingService settingService = new SettingService();
-    private final SettingDAO settingDAO = new SettingDAO();
+    private PlayerService _playerService;
+    private MP3FileService _MP3FileService;
+    private SettingService _settingService;
+    private PlaylistView _playlistView;
+    private ArtisteView _artisteView;
+    private ChansonView _chansonView;
+    private AlbumView _albumView;
+    private AjoutChansonView _ajoutChansonView;
+    private RechercheView _rechercheView;
+    private ChansonViewBox _chansonViewBox;
+    private SettingDAO _settingDAO;
+
+    public MainController() {
+        // Le constructeur par défaut est requis par JavaFX FXMLLoader
+    }
+
+    public MainController(PlayerService playerService,
+                          MP3FileService MP3FileService,
+                          SettingService settingService,
+                          PlaylistView playlistView,
+                          ArtisteView artisteView,
+                          ChansonView chansonView,
+                          AlbumView albumView,
+                          AjoutChansonView ajoutChansonView,
+                          RechercheView rechercheView,
+                          ChansonViewBox chansonViewBox,
+                          SettingDAO settingDAO) {
+        _playerService = playerService;
+        _MP3FileService = MP3FileService;
+        _settingService = settingService;
+        _playlistView = playlistView;
+        _artisteView = artisteView;
+        _chansonView = chansonView;
+        _albumView = albumView;
+        _ajoutChansonView = ajoutChansonView;
+        _rechercheView = rechercheView;
+        _chansonViewBox = chansonViewBox;
+        _settingDAO = settingDAO;
+    }
 
     @FXML
     public void initialize() {
-        String musicPath = settingDAO.getSetting("mp3Path");
+        String musicPath = _settingDAO.getSetting("mp3Path");
 
-        ChansonViewBox.setController(this);
+        _chansonViewBox.setController(this);
         if (musicPath != null) {
-            MP3FileService.scanAndImportMusic(musicPath);
+            _MP3FileService.scanAndImportMusic(musicPath);
         }
     }
 
     @FXML
-    private void chansonPrecedente(ActionEvent actionEvent) {
+    private void chansonPrecedente() {
         //TODO
     }
 
     @FXML
-    private void playPause(ActionEvent actionEvent) {
-        playerService.playPauseSong();
+    private void playPause() {
+        _playerService.playPauseSong();
     }
 
     @FXML
@@ -51,42 +86,42 @@ public class MainController {
 
     @FXML
     private void stopChanson() {
-        playerService.stopSong();
+        _playerService.stopSong();
     }
 
     @FXML
     private void showPlaylist() {
-        mainPane.setCenter(new PlaylistView().getView());
+        mainPane.setCenter(_playlistView.getView());
     }
 
     @FXML
     private void showArtistes() {
-        mainPane.setCenter(new ArtisteView(mainPane).getView());
+        mainPane.setCenter(_artisteView.getView());
     }
 
     @FXML
     private void showAlbums() {
-        mainPane.setCenter(new AlbumView(mainPane).getView());
+        mainPane.setCenter(_albumView.getView(null));
     }
 
     @FXML
     private void showChansons() {
-        mainPane.setCenter(new ChansonView().getView());
+        mainPane.setCenter(_chansonView.getView(null));
     }
 
     @FXML
     public void showRechercheView() {
-        new RechercheView(mainPane).getView();
+        mainPane.setCenter(_rechercheView.getView());
     }
 
     @FXML
     public void showAjoutChansonView() {
-        new AjoutChansonView(mainPane).getView();
+        mainPane.setCenter(_ajoutChansonView.getView());
     }
 
     @FXML
     private void changePathMusic() {
-        settingService.setPathMusic();
+        _settingService.setPathMusic();
     }
 
     @FXML
@@ -108,9 +143,11 @@ public class MainController {
     }
 
     public void setCurrentSong(String filePath, String titre) {
-        playerService.playSong(filePath);
-
+        _playerService.playSong(filePath);
         songLabel.setText(titre);
     }
 
+    public BorderPane getMainPane(){
+        return mainPane;
+    }
 }
