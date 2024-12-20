@@ -1,50 +1,31 @@
 package com.myplayerr.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Album implements EntityBox{
+public class Album implements EntityBox {
     private int id;
     private String nom;
     private Artiste artiste;
-    private final List<Chanson> chansons;
+    private String imagePath; // Nouveau champ
 
-    public Album(int id, String nom, Artiste artiste) {
+    public Album() {}
+
+    public Album(int id, String nom, Artiste artiste, String imagePath) {
         this.id = id;
         this.nom = nom;
         this.artiste = artiste;
-        this.chansons = new ArrayList<>();
+        this.imagePath = imagePath;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    public int getId() { return id; }
+    public Artiste getArtiste() { return artiste; }
+    public String getImagePath() { return imagePath; }
+    @Override
     public String getNom() {
         return nom;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+    public void setId(int id) { this.id = id; }
+    public void setNom(String nom) { this.nom = nom; }
+    public void setArtiste(Artiste artiste) { this.artiste = artiste; }
 
-    public Artiste getArtiste() {
-        return artiste;
-    }
-
-    public void setArtiste(Artiste artiste) {
-        this.artiste = artiste;
-    }
-
-    public List<Chanson> getChansons() {
-        return chansons;
-    }
-
-    public void addChanson(Chanson chanson) {
-        chansons.add(chanson);
-    }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 }

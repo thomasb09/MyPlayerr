@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
+import java.io.File;
 
 public class EntityBoxView {
 
@@ -17,9 +17,9 @@ public class EntityBoxView {
         albumBox.setSpacing(5);
         albumBox.setStyle("-fx-padding: 10; -fx-background-color: #333333; -fx-background-radius: 8;");
 
-        String imagePath = "/images/albums/" + "img.png"; // album.getImagePath();
-        URL imageUrl = getClass().getResource(imagePath);
-        Image albumImage = new Image(imageUrl.toExternalForm());
+        String imagePath = entityBox.getImagePath();
+        File img = new File(imagePath);
+        Image albumImage = new Image(img.toURI().toString());
 
         ImageView imageView = new ImageView(albumImage);
         imageView.setFitWidth(150);

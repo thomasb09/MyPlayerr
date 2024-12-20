@@ -37,7 +37,8 @@ public class DownloadChansonSevice {
 
         Process process = pb.start();
         int exitCode = process.waitFor();
-        if (exitCode != 1) {
+        if (exitCode == 0) {
+            _mp3FileService.scanAndImportMusic(musicPath);
             return;
         }
 
