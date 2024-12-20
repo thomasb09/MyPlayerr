@@ -2,20 +2,23 @@ package com.myplayerr;
 
 import com.myplayerr.controller.MainController;
 import com.myplayerr.database.*;
-import com.myplayerr.service.MP3FileService;
-import com.myplayerr.service.PlayerService;
-import com.myplayerr.service.SettingService;
+import com.myplayerr.service.*;
 import com.myplayerr.view.*;
-import com.myplayerr.view.utils.AlbumArtisteView;
 import com.myplayerr.view.utils.ChansonViewBox;
+import com.myplayerr.view.utils.EntityBoxView;
 
 public class AppContext {
 
     private static AppContext instance;
 
+    private final AudDService audDService;
     private final PlayerService playerService;
     private final MP3FileService mp3FileService;
     private final SettingService settingService;
+    private final AjoutChansonService ajoutChansonService;
+    private final RechercheTitreService rechercheTitreService;
+    private final DownloadChansonSevice downloadChansonSevice;
+    private final FFmpegConvertisseurService fFmpegConvertisseurService;
 
     private final PlaylistView playlistView;
     private final ArtisteView artisteView;
@@ -24,7 +27,7 @@ public class AppContext {
     private final AjoutChansonView ajoutChansonView;
     private final RechercheView rechercheView;
     private final ChansonViewBox chansonViewBox;
-    private final AlbumArtisteView albumArtisteView;
+    private final EntityBoxView entityBoxView;
 
     private final AlbumDAO albumDAO;
     private final ArtisteDAO artisteDAO;
@@ -43,9 +46,15 @@ public class AppContext {
         settingDAO = new SettingDAO();
 
         // Initialisation des services
+        audDService = new AudDService();
         playerService = new PlayerService();
         mp3FileService = new MP3FileService();
         settingService = new SettingService();
+        ajoutChansonService = new AjoutChansonService();
+        rechercheTitreService = new RechercheTitreService();
+        downloadChansonSevice = new DownloadChansonSevice();
+        fFmpegConvertisseurService = new FFmpegConvertisseurService();
+
 
         // Initialisation des vues
         playlistView = new PlaylistView();
@@ -55,32 +64,41 @@ public class AppContext {
         ajoutChansonView = new AjoutChansonView();
         rechercheView = new RechercheView();
         chansonViewBox = new ChansonViewBox();
-        albumArtisteView = new AlbumArtisteView();
+        entityBoxView = new EntityBoxView();
 
         // Initialisation des contolleur
         mainController = new MainController(
                 playerService,
-                mp3FileService,
                 settingService,
                 playlistView,
                 artisteView,
                 chansonView,
                 albumView,
                 ajoutChansonView,
-                rechercheView,
-                chansonViewBox,
-                settingDAO
+                rechercheView
         );
     }
 
     public void setDependance() {
-        albumView.setDependance(mainController.getMainPane(), albumDAO, chansonView, albumArtisteView);
+        settingService.setDependance(settingDAO, mp3FileService);
+        mp3FileService.setDependance(chansonDAO, audDService);
+        albumView.setDependance(mainController.getMainPane(), albumDAO, chansonView, entityBoxView);
         chansonDAO.setDependance(albumDAO);
         playlistDAO.setDependance(chansonDAO);
         rechercheView.setDependance(chansonViewBox);
         chansonView.setDependance(chansonViewBox, chansonDAO);
         albumDAO.setDependance(artisteDAO);
-        artisteView.setDependance(mainController.getMainPane(), artisteDAO, albumArtisteView, albumView);
+        artisteView.setDependance(mainController.getMainPane(), artisteDAO, entityBoxView, albumView);
+        chansonViewBox.setDependance(mainController);
+        ajoutChansonView.setDependance(ajoutChansonService);
+        ajoutChansonService.setDependance(rechercheTitreService, downloadChansonSevice);
+        downloadChansonSevice.setDependance(settingDAO, mp3FileService, fFmpegConvertisseurService);
+
+        String musicPath = settingDAO.getSetting("mp3Path");
+
+        if (musicPath != null) {
+            mp3FileService.scanAndImportMusic(musicPath);
+        }
     }
 
     public static synchronized AppContext getInstance() {

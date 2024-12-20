@@ -16,13 +16,18 @@ import java.util.stream.Stream;
 
 public class MP3FileService {
 
-    private final ChansonDAO chansonDAO = new ChansonDAO();
-    private final AudDService audDService = new AudDService();
+    private ChansonDAO _chansonDAO;
+    private AudDService _audDService;
+
+    public void setDependance(ChansonDAO chansonDAO, AudDService audDService) {
+        _chansonDAO = chansonDAO;
+        _audDService = audDService;
+    }
 
     public void scanAndImportMusic(String folderPath) {
         try (Stream<Path> paths = Files.walk(Paths.get(folderPath))) {
             paths.filter(Files::isRegularFile)
-                    .filter(p -> p.toString().toLowerCase().endsWith(".mp3"))
+                    .filter(p -> p.toString().toLowerCase().endsWith(".mp3") || p.toString().toLowerCase().endsWith(".webm"))
                     .forEach(this::processFile);
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,7 +38,7 @@ public class MP3FileService {
         String absolutePath = filePath.toAbsolutePath().toString();
         String fileName = filePath.getFileName().toString();
 
-        if (!chansonDAO.chansonExists(absolutePath)) {
+        if (!_chansonDAO.chansonExists(absolutePath)) {
             String titleName;
             String artistName;
             String albumName;
@@ -42,9 +47,11 @@ public class MP3FileService {
             try {
                 Mp3File mp3File = new Mp3File(absolutePath);
                 duration = formatDuration(mp3File.getLengthInSeconds());
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
 
-            AudDService.Metadata metadata = audDService.searchSongByFile(absolutePath);
+            }
+
+            AudDService.Metadata metadata = _audDService.searchSongByFile(absolutePath);
 
             titleName = metadata.title();
             artistName = metadata.artist();
@@ -70,7 +77,7 @@ public class MP3FileService {
                 album = albumDAO.getAlbumByNameAndArtist(albumName, artiste.getId());
             }
 
-            chansonDAO.addChanson(absolutePath, fileName, titleName, artiste.getId(), album.getId(), duration);
+            _chansonDAO.addChanson(absolutePath, fileName, titleName, artiste.getId(), album.getId(), duration);
         }
     }
 

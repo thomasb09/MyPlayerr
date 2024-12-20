@@ -15,29 +15,11 @@ public class AlbumDAO {
         _artisteDAO = artisteDAO;
     }
 
-    public Album getAlbumByNameAndArtist(String nom, int artisteId) {
-        String sql = "SELECT * FROM albums WHERE nom = ? AND artiste_id = ?";
+    public void addAlbum(String titre, int artisteId) {
+        String sql = "INSERT OR IGNORE INTO albums (titre, artiste_id) VALUES (?, ?)";
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nom);
-            pstmt.setInt(2, artisteId);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return new Album(rs.getInt("id"), rs.getString("nom"), null);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void addAlbum(String nom, int artisteId) {
-        String sql = "INSERT OR IGNORE INTO albums (nom, artiste_id) VALUES (?, ?)";
-
-        try (Connection conn = DatabaseManager.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nom);
+            pstmt.setString(1, titre);
             pstmt.setInt(2, artisteId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -45,18 +27,36 @@ public class AlbumDAO {
         }
     }
 
+    public Album getAlbumByNameAndArtist(String nom, int artisteId) {
+        String sql = "SELECT * FROM albums WHERE titre = ? AND artiste_id = ?";
+        try (Connection conn = DatabaseManager.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nom);
+            pstmt.setInt(2, artisteId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Album(rs.getInt("id"), rs.getString("titre"), null);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Album> getAllAlbums() {
         List<Album> albums = new ArrayList<>();
-        String sql = "SELECT albums.id, albums.nom, artistes.nom AS artiste_nom, albums.artiste_id AS artiste_id FROM albums " +
+        String sql = "SELECT albums.id, albums.titre, artistes.nom AS artiste_nom, albums.artiste_id AS artiste_id FROM albums " +
                 "JOIN artistes ON albums.artiste_id = artistes.id";
 
         try (Connection conn = DatabaseManager.connect();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             ResultSet rs = stmt.executeQuery(sql)) { // Inclusion de ResultSet dans try-with-resources
 
             while (rs.next()) {
                 Artiste artiste = new Artiste(rs.getInt("artiste_id"), rs.getString("artiste_nom"));
-                albums.add(new Album(rs.getInt("id"), rs.getString("nom"), artiste));
+                albums.add(new Album(rs.getInt("id"), rs.getString("titre"), artiste));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,20 +65,16 @@ public class AlbumDAO {
     }
 
     public Album getAlbumById(int albumId) {
+        String sql = "SELECT * FROM albums WHERE id = ?";
         try (Connection conn = DatabaseManager.connect();
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM albums WHERE id = ?")) {
-
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, albumId);
-            ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                Artiste artiste = _artisteDAO.getArtisteById(rs.getInt("artiste_id"));
-
-                return new Album(
-                        rs.getInt("id"),
-                        rs.getString("titre"),
-                        artiste
-                );
+            try (ResultSet rs = stmt.executeQuery()) { // Inclusion de ResultSet dans try-with-resources
+                if (rs.next()) {
+                    Artiste artiste = _artisteDAO.getArtisteById(rs.getInt("artiste_id"));
+                    return new Album(rs.getInt("id"), rs.getString("titre"), artiste);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,14 +89,15 @@ public class AlbumDAO {
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, artisteId);
-            ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()) {
-                albums.add(new Album(
-                        rs.getInt("id"),
-                        rs.getString("nom"),
-                        new Artiste(artisteId, "")
-                ));
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String titre = rs.getString("titre");
+                    Artiste artiste = _artisteDAO.getArtisteById(artisteId);
+                    Album album = new Album(id, titre, artiste);
+                    albums.add(album);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

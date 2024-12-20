@@ -87,3 +87,8 @@
 .border-pane {
     -fx-background-color: #1e1e1e; /* Fond sombre pour la zone centrale */
 }
+
+.progress-indicator .spinner {
+    -fx-stroke: #27ae60; /* Couleur verte */
+    -fx-stroke-width: 4px; /* Épaisseur */
+}

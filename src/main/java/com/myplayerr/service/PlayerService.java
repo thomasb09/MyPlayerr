@@ -54,7 +54,7 @@ public class PlayerService {
         }
     }
 
-    public String get_currentSong(){
+    public String getCurrentSong(){
         return _currentSong;
     }
 }

@@ -14,7 +14,7 @@ public class ChansonViewBox {
 
     public MainController _controller;
 
-    public void setController(MainController controller){
+    public void setDependance(MainController controller){
         _controller = controller;
     }
 

@@ -8,8 +8,13 @@ import java.io.File;
 
 public class SettingService {
 
-    private final SettingDAO settingsDAO = new SettingDAO();
-    private final MP3FileService MP3FileService = new MP3FileService();
+    private SettingDAO _settingsDAO;
+    private MP3FileService _MP3FileService;
+
+    public void setDependance(SettingDAO settingsDAO, MP3FileService mp3FileService) {
+        _settingsDAO = settingsDAO;
+        _MP3FileService = mp3FileService;
+    }
 
     public void setPathMusic() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -19,9 +24,9 @@ public class SettingService {
         if (selectedDirectory != null) {
             String selectedPath = selectedDirectory.getAbsolutePath();
 
-            settingsDAO.saveSetting("mp3Path", selectedPath);
+            _settingsDAO.saveSetting("mp3Path", selectedPath);
 
-            MP3FileService.scanAndImportMusic(selectedPath);
+            _MP3FileService.scanAndImportMusic(selectedPath);
         }
     }
 }

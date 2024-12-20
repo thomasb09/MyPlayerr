@@ -24,7 +24,7 @@ public class AudDService {
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("api_token", API_KEY)
                 .addFormDataPart("file", audioFile.getName(),
-                        RequestBody.create(audioFile, MediaType.parse("audio/mpeg")))
+                        RequestBody.create(audioFile, MediaType.parse("audio/webm")))
                 .build();
 
         Request request = new Request.Builder()

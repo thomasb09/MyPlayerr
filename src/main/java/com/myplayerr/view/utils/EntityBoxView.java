@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 
 import java.net.URL;
 
-public class AlbumArtisteView {
+public class EntityBoxView {
 
     public VBox createEntityBox(EntityBox entityBox) {
         VBox albumBox = new VBox();

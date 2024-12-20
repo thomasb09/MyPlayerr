@@ -1,11 +1,8 @@
 package com.myplayerr.controller;
 
-import com.myplayerr.database.SettingDAO;
-import com.myplayerr.service.MP3FileService;
 import com.myplayerr.service.PlayerService;
 import com.myplayerr.service.SettingService;
 import com.myplayerr.view.*;
-import com.myplayerr.view.utils.ChansonViewBox;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -14,13 +11,12 @@ import javafx.scene.layout.BorderPane;
 public class MainController {
 
     @FXML
-    private BorderPane mainPane;
+    BorderPane mainPane;
 
     @FXML
-    private Label songLabel;
+    Label songLabel;
 
     private PlayerService _playerService;
-    private MP3FileService _MP3FileService;
     private SettingService _settingService;
     private PlaylistView _playlistView;
     private ArtisteView _artisteView;
@@ -28,26 +24,20 @@ public class MainController {
     private AlbumView _albumView;
     private AjoutChansonView _ajoutChansonView;
     private RechercheView _rechercheView;
-    private ChansonViewBox _chansonViewBox;
-    private SettingDAO _settingDAO;
 
     public MainController() {
         // Le constructeur par défaut est requis par JavaFX FXMLLoader
     }
 
     public MainController(PlayerService playerService,
-                          MP3FileService MP3FileService,
                           SettingService settingService,
                           PlaylistView playlistView,
                           ArtisteView artisteView,
                           ChansonView chansonView,
                           AlbumView albumView,
                           AjoutChansonView ajoutChansonView,
-                          RechercheView rechercheView,
-                          ChansonViewBox chansonViewBox,
-                          SettingDAO settingDAO) {
+                          RechercheView rechercheView) {
         _playerService = playerService;
-        _MP3FileService = MP3FileService;
         _settingService = settingService;
         _playlistView = playlistView;
         _artisteView = artisteView;
@@ -55,18 +45,10 @@ public class MainController {
         _albumView = albumView;
         _ajoutChansonView = ajoutChansonView;
         _rechercheView = rechercheView;
-        _chansonViewBox = chansonViewBox;
-        _settingDAO = settingDAO;
     }
 
     @FXML
     public void initialize() {
-        String musicPath = _settingDAO.getSetting("mp3Path");
-
-        _chansonViewBox.setController(this);
-        if (musicPath != null) {
-            _MP3FileService.scanAndImportMusic(musicPath);
-        }
     }
 
     @FXML
@@ -75,7 +57,7 @@ public class MainController {
     }
 
     @FXML
-    private void playPause() {
+    void playPause() {
         _playerService.playPauseSong();
     }
 
@@ -85,27 +67,27 @@ public class MainController {
     }
 
     @FXML
-    private void stopChanson() {
+    void stopChanson() {
         _playerService.stopSong();
     }
 
     @FXML
-    private void showPlaylist() {
+    void showPlaylist() {
         mainPane.setCenter(_playlistView.getView());
     }
 
     @FXML
-    private void showArtistes() {
+    void showArtistes() {
         mainPane.setCenter(_artisteView.getView());
     }
 
     @FXML
-    private void showAlbums() {
+    void showAlbums() {
         mainPane.setCenter(_albumView.getView(null));
     }
 
     @FXML
-    private void showChansons() {
+    void showChansons() {
         mainPane.setCenter(_chansonView.getView(null));
     }
 
@@ -120,7 +102,7 @@ public class MainController {
     }
 
     @FXML
-    private void changePathMusic() {
+    void changePathMusic() {
         _settingService.setPathMusic();
     }
 
@@ -129,7 +111,7 @@ public class MainController {
     }
 
     @FXML
-    private void showAbout() {
+    void showAbout() {
         Alert aboutAlert = new Alert(Alert.AlertType.INFORMATION);
         aboutAlert.setTitle("About MyPlayerr");
         aboutAlert.setHeaderText("MyPlayerr - Gestionnaire MP3");
@@ -138,7 +120,7 @@ public class MainController {
     }
 
     @FXML
-    private void exitApp() {
+    void exitApp() {
         System.exit(0);
     }
 

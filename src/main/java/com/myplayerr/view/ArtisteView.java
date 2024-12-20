@@ -2,7 +2,7 @@ package com.myplayerr.view;
 
 import com.myplayerr.database.ArtisteDAO;
 import com.myplayerr.model.Artiste;
-import com.myplayerr.view.utils.AlbumArtisteView;
+import com.myplayerr.view.utils.EntityBoxView;
 import com.myplayerr.view.utils.ViewUtils;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -15,16 +15,16 @@ public class ArtisteView {
 
     private BorderPane _pane;
     private ArtisteDAO _artisteDAO;
-    private AlbumArtisteView _albumArtisteView;
+    private EntityBoxView _entityBoxView;
     private AlbumView _albumView;
 
     public ArtisteView() {
     }
 
-    public void setDependance(BorderPane pane, ArtisteDAO artisteDAO, AlbumArtisteView albumArtisteView, AlbumView albumView) {
+    public void setDependance(BorderPane pane, ArtisteDAO artisteDAO, EntityBoxView entityBoxView, AlbumView albumView) {
         _pane = pane;
         _artisteDAO = artisteDAO;
-        _albumArtisteView = albumArtisteView;
+        _entityBoxView = entityBoxView;
         _albumView = albumView;
     }
 
@@ -38,7 +38,7 @@ public class ArtisteView {
         List<Artiste> artistes = _artisteDAO.getAllArtistes();
 
         for (Artiste artiste : artistes) {
-            VBox artisteBox = _albumArtisteView.createEntityBox(artiste);
+            VBox artisteBox = _entityBoxView.createEntityBox(artiste);
             artisteBox.setOnMouseClicked(event ->  _pane.setCenter(_albumView.getView(artiste)));
             artistePane.getChildren().add(artisteBox);
         }
