@@ -62,7 +62,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.10.2</version>
+      <version>5.9.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.10.2</version>
+      <version>5.9.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version>
+      <version>5.5.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -118,8 +118,20 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
-      <version>4.11.0</version>
+      <version>5.5.0</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testfx</groupId>
+      <artifactId>testfx-junit5</artifactId>
+      <version>4.0.16-alpha</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>testfx-core</artifactId>
+          <groupId>org.testfx</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   <properties>

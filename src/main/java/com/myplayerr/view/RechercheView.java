@@ -1,6 +1,7 @@
 package com.myplayerr.view;
 
 import com.myplayerr.model.Chanson;
+import com.myplayerr.service.RechercheChansonService;
 import com.myplayerr.view.utils.ChansonViewBox;
 import com.myplayerr.view.utils.ViewUtils;
 import javafx.scene.control.Button;
@@ -9,14 +10,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RechercheView {
 
     private ChansonViewBox _chansonViewBox;
+    private RechercheChansonService _rechercheChansonService;
 
-    public void setDependance(ChansonViewBox chansonViewBox) {
+    public void setDependance(ChansonViewBox chansonViewBox, RechercheChansonService rechercheChansonService) {
         _chansonViewBox = chansonViewBox;
+        _rechercheChansonService = rechercheChansonService;
     }
 
     public VBox getView() {
@@ -32,7 +34,7 @@ public class RechercheView {
 
         searchButton.setOnAction(event -> {
             String query = searchField.getText();
-            List<Chanson> results = searchChansons(query);
+            List<Chanson> results = _rechercheChansonService.rechercheChansons(query);
             resultList.getChildren().clear();
             results.stream()
                     .map(_chansonViewBox::createChansonBox)
@@ -42,14 +44,5 @@ public class RechercheView {
         rootVBox.getChildren().addAll(ViewUtils.createSearchBox(searchField, searchButton), scrollPane);
 
         return rootVBox;
-    }
-
-    private List<Chanson> searchChansons(String query) {
-        List<Chanson> allChansons = new com.myplayerr.database.ChansonDAO().getAllChansons();
-        return allChansons.stream()
-                .filter(chanson -> chanson.getTitre().toLowerCase().contains(query.toLowerCase())
-                        || chanson.getArtiste().getNom().toLowerCase().contains(query.toLowerCase())
-                        || chanson.getAlbum().getNom().toLowerCase().contains(query.toLowerCase()))
-                .collect(Collectors.toList());
     }
 }
