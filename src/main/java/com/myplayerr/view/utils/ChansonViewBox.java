@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-import java.net.URL;
+import java.io.File;
 
 public class ChansonViewBox {
 
@@ -27,9 +27,9 @@ public class ChansonViewBox {
         Label songLabel = new Label(chanson.getTitre() + " - " + chanson.getDuree());
         songLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
 
-        String imagePath = "/images/albums/" + "img.png";//chanson.getAlbum().getImagePath();
-        URL imageUrl = ChansonViewBox.class.getResource(imagePath);
-        Image albumImage = new Image(imageUrl.toExternalForm());
+        String imagePath = chanson.getAlbum().getImagePath();
+        File img = new File(imagePath);
+        Image albumImage = new Image(img.toURI().toString());
         ImageView smallAlbumImage = new ImageView(albumImage);
         smallAlbumImage.setFitWidth(40);
         smallAlbumImage.setFitHeight(40);

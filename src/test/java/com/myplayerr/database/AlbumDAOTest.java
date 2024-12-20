@@ -298,7 +298,7 @@ class AlbumDAOTest {
             Connection mockConnection = mock(Connection.class);
             PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
             ResultSet mockResultSet = mock(ResultSet.class);
-            Artiste mockArtiste = new Artiste(1, "TestArtiste");
+            Artiste mockArtiste = new Artiste(1, "TestArtiste", "TestImage");
 
             mockedDatabaseManager.when(DatabaseManager::connect).thenReturn(mockConnection);
             when(mockConnection.prepareStatement("SELECT * FROM albums WHERE id = ?")).thenReturn(mockPreparedStatement);

@@ -1,50 +1,23 @@
 package com.myplayerr.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Artiste implements EntityBox{
     private int id;
     private String nom;
-    private final List<Album> albums;
-    private final List<Chanson> chansons;
+    private String imagePath;
 
-    public Artiste(int id, String nom) {
+    public Artiste() {}
+
+    public Artiste(int id, String nom, String imagePath) {
         this.id = id;
         this.nom = nom;
-        this.albums = new ArrayList<>();
-        this.chansons = new ArrayList<>();
+        this.imagePath = imagePath;
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
+    public String getNom() { return nom; }
+    public String getImagePath() { return imagePath; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public List<Album> getAlbums() {
-        return albums;
-    }
-
-    public void addAlbum(Album album) {
-        albums.add(album);
-    }
-
-    public List<Chanson> getChansons() {
-        return chansons;
-    }
-
-    public void addChanson(Chanson chanson) {
-        chansons.add(chanson);
-    }
+    public void setId(int id) { this.id = id; }
+    public void setNom(String nom) { this.nom = nom; }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 }

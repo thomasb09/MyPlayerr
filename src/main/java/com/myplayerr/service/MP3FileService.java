@@ -17,11 +17,17 @@ import java.util.stream.Stream;
 public class MP3FileService {
 
     private ChansonDAO _chansonDAO;
+    private ArtisteDAO _artisteDAO;
     private AudDService _audDService;
+    private ImageService _imageService;
+    private AlbumDAO _albumDAO;
 
-    public void setDependance(ChansonDAO chansonDAO, AudDService audDService) {
+    public void setDependance(ChansonDAO chansonDAO, ArtisteDAO artisteDAO, AudDService audDService, ImageService imageService, AlbumDAO albumDAO) {
         _chansonDAO = chansonDAO;
+        _artisteDAO = artisteDAO;
         _audDService = audDService;
+        _imageService = imageService;
+        _albumDAO = albumDAO;
     }
 
     public void scanAndImportMusic(String folderPath) {
@@ -48,7 +54,6 @@ public class MP3FileService {
                 Mp3File mp3File = new Mp3File(absolutePath);
                 duration = formatDuration(mp3File.getLengthInSeconds());
             } catch (Exception ignored) {
-
             }
 
             AudDService.Metadata metadata = _audDService.searchSongByFile(absolutePath);
@@ -63,22 +68,63 @@ public class MP3FileService {
                 ex.printStackTrace();
             }
 
-            ArtisteDAO artisteDAO = new ArtisteDAO();
-            Artiste artiste = artisteDAO.getArtisteByName(artistName);
+            Artiste artiste = _artisteDAO.getArtisteByName(artistName);
             if (artiste == null) {
-                artisteDAO.addArtiste(artistName);
-                artiste = artisteDAO.getArtisteByName(artistName);
+                _artisteDAO.addArtiste(artistName);
             }
 
-            AlbumDAO albumDAO = new AlbumDAO();
-            Album album = albumDAO.getAlbumByNameAndArtist(albumName, artiste.getId());
+            artiste = _artisteDAO.getArtisteByName(artistName);
+
+            Album album = _albumDAO.getAlbumByNameAndArtist(albumName, artiste.getId());
             if (album == null) {
-                albumDAO.addAlbum(albumName, artiste.getId());
-                album = albumDAO.getAlbumByNameAndArtist(albumName, artiste.getId());
+                _albumDAO.addAlbum(albumName, artiste.getId(), albumName + ".png");
+                album = _albumDAO.getAlbumByNameAndArtist(albumName, artiste.getId());
+                if (album != null) {
+                    String albumImageUrl = _imageService.fetchAlbumImageUrl(albumName, artistName);
+                    if (albumImageUrl != null) {
+                        String albumImagePath = saveImage(albumName, "albums", albumImageUrl);
+                        if (albumImagePath != null) {
+                            _albumDAO.updateAlbumImage(album.getId(), albumImagePath);
+                            _artisteDAO.updateArtisteImage(artiste.getId(), albumImagePath);
+                        }
+                    }
+                }
             }
 
             _chansonDAO.addChanson(absolutePath, fileName, titleName, artiste.getId(), album.getId(), duration);
         }
+    }
+
+    private String saveImage(String name, String type, String imageUrl) {
+        String saveRelativePath = "images/" + type + "/";
+        String imagesDir = "./images/" + type + "/";
+        File dir = new File(imagesDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        String fileExtension = getFileExtension(imageUrl);
+        String sanitizedName = name.replaceAll("[^a-zA-Z0-9\\.\\-]", "_");
+        String fileName = sanitizedName + "." + fileExtension;
+        String savePath = imagesDir + fileName;
+
+        boolean success = _imageService.downloadImage(imageUrl, savePath);
+        if (success) {
+            return saveRelativePath + fileName;
+        }
+        return null;
+    }
+
+    private String getFileExtension(String url) {
+        String extension = "jpg";
+        int lastDot = url.lastIndexOf('.');
+        if (lastDot != -1 && lastDot < url.length() - 1) {
+            extension = url.substring(lastDot + 1).split("\\?")[0];
+            if (extension.length() > 4) {
+                extension = "jpg";
+            }
+        }
+        return extension;
     }
 
     private void updateFileMetadata(String filePath, String title, String artist, String album)

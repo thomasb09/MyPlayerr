@@ -19,7 +19,8 @@ public class DatabaseManager {
             // Create table for artists
             String createArtistesTable = "CREATE TABLE IF NOT EXISTS artistes (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "nom TEXT NOT NULL UNIQUE" +
+                    "nom TEXT NOT NULL UNIQUE, " +
+                    "image_path VARCHAR(512)" +
                     ");";
 
             // Create table for albums
@@ -27,6 +28,7 @@ public class DatabaseManager {
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "titre TEXT NOT NULL, " +
                     "artiste_id INTEGER NOT NULL, " +
+                    "image_path VARCHAR(512), " +
                     "FOREIGN KEY(artiste_id) REFERENCES artistes(id) ON DELETE CASCADE" +
                     ");";
 
