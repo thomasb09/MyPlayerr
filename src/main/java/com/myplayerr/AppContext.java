@@ -19,6 +19,7 @@ public class AppContext {
     private final RechercheTitreService rechercheTitreService;
     private final DownloadChansonSevice downloadChansonSevice;
     private final FFmpegConvertisseurService fFmpegConvertisseurService;
+    private final RechercheChansonService rechercheChansonService;
 
     private final PlaylistView playlistView;
     private final ArtisteView artisteView;
@@ -54,7 +55,7 @@ public class AppContext {
         rechercheTitreService = new RechercheTitreService();
         downloadChansonSevice = new DownloadChansonSevice();
         fFmpegConvertisseurService = new FFmpegConvertisseurService();
-
+        rechercheChansonService = new RechercheChansonService();
 
         // Initialisation des vues
         playlistView = new PlaylistView();
@@ -85,7 +86,8 @@ public class AppContext {
         albumView.setDependance(mainController.getMainPane(), albumDAO, chansonView, entityBoxView);
         chansonDAO.setDependance(albumDAO);
         playlistDAO.setDependance(chansonDAO);
-        rechercheView.setDependance(chansonViewBox);
+        rechercheView.setDependance(chansonViewBox, rechercheChansonService);
+        rechercheChansonService.setDependance(chansonDAO);
         chansonView.setDependance(chansonViewBox, chansonDAO);
         albumDAO.setDependance(artisteDAO);
         artisteView.setDependance(mainController.getMainPane(), artisteDAO, entityBoxView, albumView);

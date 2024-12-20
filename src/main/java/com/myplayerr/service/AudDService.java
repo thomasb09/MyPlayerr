@@ -4,12 +4,28 @@ import okhttp3.*;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class AudDService {
 
     private static final String API_URL = "https://api.audd.io/";
-    private static final String API_KEY = "2f582b6636e756d630077de294af79d7";
+    private final String apiKey;
+
+    public AudDService(){
+        Properties props = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+            if (input == null) {
+                throw new FileNotFoundException("Fichier config.properties introuvable dans le classpath.");
+            }
+            props.load(input);
+            apiKey = props.getProperty("api.audD.token");
+        } catch (IOException e) {
+            throw new RuntimeException("Erreur lors du chargement de config.properties", e);
+        }
+    }
 
     public Metadata searchSongByFile(String filePath) {
         File audioFile = new File(filePath);
@@ -22,7 +38,7 @@ public class AudDService {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("api_token", API_KEY)
+                .addFormDataPart("api_token", apiKey)
                 .addFormDataPart("file", audioFile.getName(),
                         RequestBody.create(audioFile, MediaType.parse("audio/webm")))
                 .build();
