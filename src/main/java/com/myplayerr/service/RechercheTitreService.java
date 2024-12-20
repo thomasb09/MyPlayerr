@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class RechercheTitreService {
-    private String apiKey;
+    private final String apiKey;
     private static final String SEARCH_URL = "https://www.googleapis.com/youtube/v3/search";
 
     public RechercheTitreService() {
@@ -31,7 +31,7 @@ public class RechercheTitreService {
     public Task<List<List<String>>> rechercheYouTubeAsync(String query) {
         return new Task<>() {
             @Override
-            protected List<List<String>> call() throws Exception {
+            protected List<List<String>> call(){
                 return rechercheYouTube(query);
             }
         };

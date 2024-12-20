@@ -84,7 +84,7 @@ public class AjoutChansonView {
 
         String resultText = result.get(0);
         String url = result.get(2);
-        String imageUrl = result.size() > 1 ? result.get(1) : "";
+        String imageUrl = result.get(1);
 
         Label resultLabel = new Label(resultText);
         resultLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
@@ -103,7 +103,7 @@ public class AjoutChansonView {
         if (!imageUrl.isEmpty()) {
             Task<Image> loadImageTask = new Task<>() {
                 @Override
-                protected Image call() throws Exception {
+                protected Image call(){
                     return new Image(imageUrl, 50, 50, true, true); // Télécharger l'image
                 }
             };
@@ -118,9 +118,7 @@ public class AjoutChansonView {
 
         Button addButton = new Button("Ajouter");
         addButton.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
-        addButton.setOnAction(event -> {
-            _ajoutChansonService.ajouterChanson(url);
-        });
+        addButton.setOnAction(event -> _ajoutChansonService.ajouterChanson(url));
 
         resultBox.getChildren().addAll(imageContainer, resultLabel, addButton);
         return resultBox;

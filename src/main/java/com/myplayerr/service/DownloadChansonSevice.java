@@ -9,7 +9,6 @@ import java.util.Comparator;
 
 public class DownloadChansonSevice {
 
-    private SettingDAO _settingDAO;
     private MP3FileService _mp3FileService;
     private FFmpegConvertisseurService _fFmpegConvertisseurService;
     private String musicPath = "";
@@ -18,10 +17,9 @@ public class DownloadChansonSevice {
     }
 
     public void setDependance(SettingDAO settingDAO, MP3FileService mp3FileService, FFmpegConvertisseurService fFmpegConvertisseurService){
-        _settingDAO = settingDAO;
         _mp3FileService = mp3FileService;
         _fFmpegConvertisseurService = fFmpegConvertisseurService;
-        musicPath = _settingDAO.getSetting("mp3Path");
+        musicPath = settingDAO.getSetting("mp3Path");
     }
 
     public void download(String videoUrl) throws IOException, InterruptedException {
