@@ -40,3 +40,6 @@ build/
 ### Intelij ###
 .idea
 qodana.yaml
+
+### propreties ###
+config.properties
