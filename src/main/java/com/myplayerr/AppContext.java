@@ -30,6 +30,7 @@ public class AppContext {
     private final RechercheView rechercheView;
     private final ChansonViewBox chansonViewBox;
     private final EntityBoxView entityBoxView;
+    private final DownloadView downloadView;
 
     private final AlbumDAO albumDAO;
     private final ArtisteDAO artisteDAO;
@@ -68,6 +69,7 @@ public class AppContext {
         rechercheView = new RechercheView();
         chansonViewBox = new ChansonViewBox();
         entityBoxView = new EntityBoxView();
+        downloadView = new DownloadView();
 
         // Initialisation des contolleur
         mainController = new MainController(
@@ -78,7 +80,8 @@ public class AppContext {
                 chansonView,
                 albumView,
                 ajoutChansonView,
-                rechercheView
+                rechercheView,
+                downloadView
         );
     }
 
@@ -97,6 +100,9 @@ public class AppContext {
         ajoutChansonView.setDependance(ajoutChansonService);
         ajoutChansonService.setDependance(rechercheTitreService, downloadChansonSevice);
         downloadChansonSevice.setDependance(settingDAO, mp3FileService, fFmpegConvertisseurService);
+        downloadView.setDependance(ajoutChansonService);
+
+        mainController.setDependance();
 
         String musicPath = settingDAO.getSetting("mp3Path");
 

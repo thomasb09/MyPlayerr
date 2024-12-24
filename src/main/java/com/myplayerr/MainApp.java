@@ -12,6 +12,9 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         DatabaseManager.initializeDatabase();
 
+//        Image appIcon = new Image(getClass().getResource("./images/albums/defaultAlbum.png").toExternalForm());
+//        primaryStage.getIcons().add(appIcon);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/mainView.fxml"));
 
         AppContext context = AppContext.getInstance();
