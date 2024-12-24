@@ -75,9 +75,39 @@ public class ResultViewBox {
 
         Button addButton = new Button("Ajouter");
         addButton.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
-        addButton.setOnAction(event -> _ajoutChansonService.ajouterChanson(url));
 
-        resultBox.getChildren().addAll(imageContainer, resultLabel, addButton);
+        ProgressIndicator addingIndicator = new ProgressIndicator();
+        addingIndicator.setMaxSize(20, 20);
+        addingIndicator.setVisible(false); // Caché par défaut
+
+        addButton.setOnAction(event -> {
+            addButton.setDisable(true);
+            addingIndicator.setVisible(true);
+
+            Task<Void> ajouterChansonTask = _ajoutChansonService.ajouterChansonAsync(url, resultText);
+
+            ajouterChansonTask.setOnSucceeded(e -> {
+                addButton.setDisable(false);
+                addingIndicator.setVisible(false);
+                System.out.println("Chanson ajoutée avec succès !");
+            });
+
+            ajouterChansonTask.setOnFailed(e -> {
+                addButton.setDisable(false);
+                addingIndicator.setVisible(false);
+                System.out.println("Erreur lors de l'ajout de la chanson : " + ajouterChansonTask.getException().getMessage());
+            });
+
+            new Thread(ajouterChansonTask).setDaemon(true);
+            new Thread(ajouterChansonTask).start();
+        });
+
+        VBox buttonContainer = new VBox(addButton, addingIndicator);
+        buttonContainer.setSpacing(5);
+        buttonContainer.setAlignment(Pos.CENTER);
+
+        resultBox.getChildren().addAll(imageContainer, resultLabel, buttonContainer);
+
     }
 
     public HBox getNode() {

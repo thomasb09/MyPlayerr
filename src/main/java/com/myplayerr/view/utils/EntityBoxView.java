@@ -17,13 +17,16 @@ public class EntityBoxView {
         String imagePath = entityBox.getImagePath();
 
         ImageView imageView = ViewUtils.createImage(imagePath);
-
         imageView.setFitWidth(150);
         imageView.setFitHeight(150);
         imageView.setPreserveRatio(true);
 
         Label albumLabel = new Label(entityBox.getNom());
+        albumLabel.setWrapText(true);
+        albumLabel.setMaxWidth(150);
         albumLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+        albumLabel.setAlignment(Pos.CENTER);
+        albumLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
         albumBox.getChildren().addAll(imageView, albumLabel);
         return albumBox;

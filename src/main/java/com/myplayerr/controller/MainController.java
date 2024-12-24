@@ -7,11 +7,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 public class MainController {
 
     @FXML
     BorderPane mainPane;
+
+    @FXML
+    private VBox menuPane;
 
     @FXML
     Label songLabel;
@@ -24,6 +28,7 @@ public class MainController {
     private AlbumView _albumView;
     private AjoutChansonView _ajoutChansonView;
     private RechercheView _rechercheView;
+    private DownloadView _downloadView;
 
     public MainController() {
         // Le constructeur par défaut est requis par JavaFX FXMLLoader
@@ -36,7 +41,8 @@ public class MainController {
                           ChansonView chansonView,
                           AlbumView albumView,
                           AjoutChansonView ajoutChansonView,
-                          RechercheView rechercheView) {
+                          RechercheView rechercheView,
+                          DownloadView downloadView) {
         _playerService = playerService;
         _settingService = settingService;
         _playlistView = playlistView;
@@ -45,10 +51,15 @@ public class MainController {
         _albumView = albumView;
         _ajoutChansonView = ajoutChansonView;
         _rechercheView = rechercheView;
+        _downloadView = downloadView;
     }
 
     @FXML
     public void initialize() {
+    }
+
+    public void setDependance(){
+        menuPane.getChildren().addAll(_downloadView.getView());
     }
 
     @FXML
