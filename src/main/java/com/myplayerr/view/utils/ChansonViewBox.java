@@ -4,11 +4,8 @@ import com.myplayerr.controller.MainController;
 import com.myplayerr.model.Chanson;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-
-import java.io.File;
 
 public class ChansonViewBox {
 
@@ -28,9 +25,9 @@ public class ChansonViewBox {
         songLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
 
         String imagePath = chanson.getAlbum().getImagePath();
-        File img = new File(imagePath);
-        Image albumImage = new Image(img.toURI().toString());
-        ImageView smallAlbumImage = new ImageView(albumImage);
+
+        ImageView smallAlbumImage = ViewUtils.createImage(imagePath);
+
         smallAlbumImage.setFitWidth(40);
         smallAlbumImage.setFitHeight(40);
         smallAlbumImage.setPreserveRatio(true);
